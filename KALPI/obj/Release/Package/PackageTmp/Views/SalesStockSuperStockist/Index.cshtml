@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Superstockist Sales Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Superstockist Sales Record(s)</h3>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Quentity</th>
+                                        <th>Superstockist</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function GetAll() {
+            $.ajax({
+                type: "POST",
+                url: "/SalesStockSuperStockist/GetAll",
+                data: "",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].pm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].ssss_qty + '</td>';
+                            InnerHTML += '<td>' + mRes[i].ss_name + '</td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+    </script>
+}

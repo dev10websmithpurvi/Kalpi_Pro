@@ -1,0 +1,111 @@
+﻿@model WS.Framework.Entity.CompanyProfile
+@{
+    ViewBag.Title = "Company Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Company Profile</h3></div>
+            <div class="panel-body">
+                <form role="form" id="CompanyPForm">
+                    <input type="hidden" id="cp_id" name="cp_id" />
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cp_companyname" class="control-label">Company Name *</label>
+                            <input type="text" class="form-control" id="cp_companyname" name="cp_companyname" maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cp_ownername" class="control-label">Owner Name *</label>
+                            <input type="text" class="form-control" id="cp_ownername" name="cp_ownername" maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cp_emailid" class="control-label">Email ID *</label>
+                            <input type="text" class="form-control" id="cp_emailid" name="cp_emailid" maxlength="50" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cp_mobileno" class="control-label">Mobile No *</label>
+                            <input type="text" class="form-control" id="cp_mobileno" name="cp_mobileno" maxlength="10" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="cp_officeno" class="control-label">Office No *</label>
+                            <input type="text" class="form-control" id="cp_officeno" name="cp_officeno" maxlength="12" required>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-6">
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div><!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col-->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            Get();
+        });
+
+        $("#cp_mobileno").keydown(function (e) {
+            alert(e.keyCode);
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        $("#cp_officeno").keydown(function (e) {
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 173]) !== -1 || (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        function Save() {
+            if ($("#cp_companyname").val() == null || $("#cp_companyname").val() == '') { sweetAlert('Company Name required !'); return false; }
+            else if ($("#cp_ownername").val() == null || $("#cp_ownername").val() == '') { sweetAlert('Owner Name required !'); return false; }
+            else if ($("#cp_emailid").val() == null || $("#cp_emailid").val() == '') { sweetAlert('Email ID required !'); return false; }
+            else if ($("#cp_mobileno").val() == null || $("#cp_mobileno").val() == '') { sweetAlert('Mobile No required !'); return false; }
+            else if ($("#cp_officeno").val() == null || $("#cp_officeno").val() == '') { sweetAlert('Office No required !'); return false; }
+            var formmodel = $("#CompanyPForm").serialize();
+            $.post("/CompanyProfile/Save", formmodel, function (resdata) {
+                sweetAlert(resdata);
+                Get();
+            });
+        }
+
+        function Get() {
+            $.ajax({
+                type: "POST",
+                url: "/CompanyProfile/Get",
+                data: "",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#cp_companyname").val(mRes[0].cp_companyname);
+                        $("#cp_mobileno").val(mRes[0].cp_mobileno);
+                        $("#cp_officeno").val(mRes[0].cp_officeno);
+                        $("#cp_emailid").val(mRes[0].cp_emailid);
+                        $("#cp_ownername").val(mRes[0].cp_ownername);
+                    }
+                }
+            });
+        }
+    </script>
+}

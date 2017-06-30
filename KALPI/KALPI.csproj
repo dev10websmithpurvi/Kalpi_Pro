@@ -1,0 +1,760 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2513414D-3246-4FDC-ADFF-E6983C562AA2}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KALPI</RootNamespace>
+    <AssemblyName>KALPI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <RanorexVersion>7.0</RanorexVersion>
+    <RanorexTargetsPath>$(MSBuildExtensionsPath)\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets</RanorexTargetsPath>
+    <projectdefaultrepository>80F52A4F-3299-4A9D-A450-C7E09B2BD6D9</projectdefaultrepository>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.2.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.2.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.2.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.2.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.2.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.2.0\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ranorex.Core" />
+    <Reference Include="Ranorex.Plugin.Cef" />
+    <Reference Include="Ranorex.Plugin.ChromeWeb" />
+    <Reference Include="Ranorex.Plugin.Flex" />
+    <Reference Include="Ranorex.Plugin.Java" />
+    <Reference Include="Ranorex.Plugin.Mobile" />
+    <Reference Include="Ranorex.Plugin.MozillaWeb" />
+    <Reference Include="Ranorex.Plugin.Msaa" />
+    <Reference Include="Ranorex.Plugin.Office" />
+    <Reference Include="Ranorex.Plugin.Qt" />
+    <Reference Include="Ranorex.Plugin.RawText" />
+    <Reference Include="Ranorex.Plugin.Sap" />
+    <Reference Include="Ranorex.Plugin.Uia" />
+    <Reference Include="Ranorex.Plugin.Web" />
+    <Reference Include="Ranorex.Plugin.WebDriver" />
+    <Reference Include="Ranorex.Plugin.Win32" />
+    <Reference Include="Ranorex.Plugin.WinForms" />
+    <Reference Include="Ranorex.Plugin.Wpf" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Data\BaseEntity.cs">
+      <id>1706bdf9-ad08-44ca-98b9-07f10b075b53</id>
+    </Compile>
+    <Compile Include="App_Data\CommanMethods.cs">
+      <id>ec4acc63-0142-47e6-9af0-9905b18d5581</id>
+    </Compile>
+    <Compile Include="App_Data\CommonClass.cs">
+      <id>19df7fe6-3552-4205-909c-20b7c5885448</id>
+    </Compile>
+    <Compile Include="App_Data\ExtendedMethods.cs">
+      <id>48f7ee48-e410-48b9-b0b5-edfdb35acf3b</id>
+    </Compile>
+    <Compile Include="App_Data\GetEntityNames.cs">
+      <id>4e0555fd-9da5-46e2-a194-b8130b7dbf6d</id>
+    </Compile>
+    <Compile Include="App_Data\GlobalVarible.cs">
+      <id>9578afe6-57e9-4614-80fa-b773d97a080f</id>
+    </Compile>
+    <Compile Include="App_Data\MySession.cs">
+      <id>11c90ddb-fc41-4f03-b3c4-835e03d43bb7</id>
+    </Compile>
+    <Compile Include="App_Start\BundleConfig.cs">
+      <id>e9550ab1-1193-4f36-b683-7b622dd8ca45</id>
+    </Compile>
+    <Compile Include="App_Start\FilterConfig.cs">
+      <id>8582600a-2398-472d-9317-51ac911c1348</id>
+    </Compile>
+    <Compile Include="App_Start\IdentityConfig.cs">
+      <id>17499720-d79f-496c-a9fe-4a2cf62d1d67</id>
+    </Compile>
+    <Compile Include="App_Start\RouteConfig.cs">
+      <id>dd2e11b4-3d13-4a3f-8427-2f0936e2d7f1</id>
+    </Compile>
+    <Compile Include="App_Start\Startup.Auth.cs">
+      <id>d0a785a6-eaca-41b1-939e-1ede71a9ea7d</id>
+    </Compile>
+    <Compile Include="App_Start\WebApiConfig.cs">
+      <id>234fa516-0a43-473b-963a-fc8506663f5a</id>
+    </Compile>
+    <Compile Include="Controllers\AccountController.cs">
+      <id>47e056b8-95e8-49ae-b41b-82f083d2db7c</id>
+    </Compile>
+    <Compile Include="Controllers\CategoryMasterController.cs">
+      <id>df089f9e-039a-4b3a-9620-15ffee5c208b</id>
+    </Compile>
+    <Compile Include="Controllers\CityMasterController.cs">
+      <id>dd90ceaf-219a-400e-932b-bb47a6158609</id>
+    </Compile>
+    <Compile Include="Controllers\CompanyProfileController.cs">
+      <id>ef8182cc-5bc3-498f-8c2f-39ebff1e21b1</id>
+    </Compile>
+    <Compile Include="Controllers\CustomerTypeMasterController.cs">
+      <id>4dfb8620-be1a-4555-852b-461aa5e475bb</id>
+    </Compile>
+    <Compile Include="Controllers\CustomeSchemeController.cs">
+      <id>18f8fbe3-5d59-4065-9f11-2b3ee986685f</id>
+    </Compile>
+    <Compile Include="Controllers\DistributorMasterController.cs">
+      <id>e517e973-3c76-41f9-8cc2-621beff0db67</id>
+    </Compile>
+    <Compile Include="Controllers\ExpenseMasterController.cs" />
+    <Compile Include="Controllers\ExpenseModeMasterController.cs" />
+    <Compile Include="Controllers\ExpenseTypeMasterController.cs" />
+    <Compile Include="Controllers\HeadquarterNotesController.cs">
+      <id>bea0fa9a-b7b0-48a5-b52d-9a203c35166c</id>
+    </Compile>
+    <Compile Include="Controllers\HomeController.cs">
+      <id>8605aca0-2b74-4175-82bb-276cd1b7918d</id>
+    </Compile>
+    <Compile Include="Controllers\InwardStockCompanyController.cs">
+      <id>5b4f6b7b-47a9-4d35-98e6-db9db3b2d910</id>
+    </Compile>
+    <Compile Include="Controllers\ManageController.cs">
+      <id>cbf1e12c-ae23-41ba-a870-d061bc11ffc5</id>
+    </Compile>
+    <Compile Include="Controllers\OrderProductController.cs">
+      <id>885a2c36-f036-4de8-b51d-f78faafa3f98</id>
+    </Compile>
+    <Compile Include="Controllers\OrderProductReportController.cs">
+      <id>bc8dc53d-3538-4051-b6ab-fbb63911c200</id>
+    </Compile>
+    <Compile Include="Controllers\OutwardStockCompanyController.cs">
+      <id>c10fb895-2337-47b5-a481-720c88893121</id>
+    </Compile>
+    <Compile Include="Controllers\ProductMasterController.cs">
+      <id>64925ecc-ca8e-4754-b2c8-65e85cda03f7</id>
+    </Compile>
+    <Compile Include="Controllers\PurchaseStockDistibutorController.cs">
+      <id>4a3618a6-7f76-423f-9aa3-e61bcf4b9041</id>
+    </Compile>
+    <Compile Include="Controllers\PurchaseStockSuperStockistController.cs">
+      <id>47cd033c-c656-49ff-b102-84dc6a3a51fd</id>
+    </Compile>
+    <Compile Include="Controllers\RetailerPaymentController.cs">
+      <id>eeafa180-c6ca-4581-9355-4cb5918247e9</id>
+    </Compile>
+    <Compile Include="Controllers\RetailOutletMasterController.cs">
+      <id>171eb354-781b-47d5-8321-b10f436b68a3</id>
+    </Compile>
+    <Compile Include="Controllers\RouteMasterController.cs">
+      <id>c9abad44-a14b-4d0b-a6a3-40564abf765b</id>
+    </Compile>
+    <Compile Include="Controllers\SalesmanAttadanceTimeController.cs">
+      <id>43e3954c-0cea-4e20-b147-3fc95a0fe334</id>
+    </Compile>
+    <Compile Include="Controllers\SalesmanMasterController.cs">
+      <id>5f372012-8fd7-4d88-abe5-561bd448244f</id>
+    </Compile>
+    <Compile Include="Controllers\SalesStockDistibutorController.cs">
+      <id>883c4dd4-6c01-47fb-b955-7076f68f9352</id>
+    </Compile>
+    <Compile Include="Controllers\SalesStockSuperStockistController.cs">
+      <id>948da8e2-7168-4e05-ad77-6344b5f06e82</id>
+    </Compile>
+    <Compile Include="Controllers\SchemeBuilderController.cs">
+      <id>a0685777-659f-4fa4-aefe-9c44d790f57b</id>
+    </Compile>
+    <Compile Include="Controllers\SMSManagementController.cs">
+      <id>b33a1210-6467-41c1-a1c0-162a25aed10f</id>
+    </Compile>
+    <Compile Include="Controllers\SMTPServerManagementController.cs">
+      <id>25bb58fb-c516-4478-8d2c-dc696618b18e</id>
+    </Compile>
+    <Compile Include="Controllers\StateMasterController.cs">
+      <id>75b9294b-bee7-4fe4-8502-a21f4cc6f451</id>
+    </Compile>
+    <Compile Include="Controllers\SuperStockIsMasterController.cs">
+      <id>76a72d16-71de-4843-ba02-a41d11c82401</id>
+    </Compile>
+    <Compile Include="Controllers\TotalStockCompanyController.cs">
+      <id>925407e8-01c9-432f-a59b-e251e16b764d</id>
+    </Compile>
+    <Compile Include="Controllers\TotalStockDistibutorController.cs">
+      <id>670a26c9-682c-4e77-8a72-7c8dbd64471f</id>
+    </Compile>
+    <Compile Include="Controllers\TotalStockSuperStockistController.cs">
+      <id>718bddea-3df5-42c2-821a-4a0894e17bcb</id>
+    </Compile>
+    <Compile Include="Controllers\VisitMasterController.cs">
+      <id>18d3a21f-9528-45f9-aeb8-42269a9d1e25</id>
+    </Compile>
+    <Compile Include="Controllers\VisitPurposeMasterController.cs">
+      <id>0aad5fd5-6b6f-414f-864c-09535cdd0fcd</id>
+    </Compile>
+    <Compile Include="Controllers\VisitTypeMasterController.cs">
+      <id>32c345e9-2816-4929-b46c-abf708b5d678</id>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+      <BoundTo>2fc90ac8-bfc8-4bd3-a42c-ac226f5527a3</BoundTo>
+      <id>ff91257b-e293-4780-8243-ee84fd08172b</id>
+    </Compile>
+    <Compile Include="KALPIRepository.cs">
+      <BoundTo>80F52A4F-3299-4A9D-A450-C7E09B2BD6D9</BoundTo>
+      <DependentUpon>KALPIRepository.rxrep</DependentUpon>
+      <RepositoryCode>true</RepositoryCode>
+      <id>82898420-a581-477e-8654-7c88427f2149</id>
+    </Compile>
+    <Compile Include="Models\AccountViewModels.cs">
+      <id>db74bad1-e869-4ca2-8616-539925e01771</id>
+    </Compile>
+    <Compile Include="Models\IdentityModels.cs">
+      <id>3ee210fe-7d16-4ea4-9537-5a3f9d89a6f0</id>
+    </Compile>
+    <Compile Include="Models\ManageViewModels.cs">
+      <id>004d3bea-038a-4b33-8023-14608047493e</id>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <id>91ff06ba-de9a-432a-aa33-125ee7ab2e97</id>
+    </Compile>
+    <Compile Include="Startup.cs">
+      <id>399ede12-fa7b-4fe3-a955-a368b82d030b</id>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\bootstrap.css">
+      <id>45067cce-7e10-4ab8-a7c0-90d1648c6942</id>
+    </Content>
+    <Content Include="Content\bootstrap.min.css">
+      <id>73821dff-7b48-4817-a212-b4348bebd216</id>
+    </Content>
+    <Content Include="favicon.ico">
+      <id>42df78ef-0090-4b8f-a83c-52e562f1f471</id>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.svg">
+      <id>eaa49175-7de4-4b0e-9f22-d8d8175bc531</id>
+    </Content>
+    <Content Include="Global.asax">
+      <id>2fc90ac8-bfc8-4bd3-a42c-ac226f5527a3</id>
+    </Content>
+    <Content Include="Content\Site.css">
+      <id>ea27d48d-74dc-4c00-b50c-b9dbe1160fdc</id>
+    </Content>
+    <Content Include="Scripts\bootstrap.js">
+      <id>a4addcd0-8be6-48bc-b52e-04bcd7c2a83e</id>
+    </Content>
+    <Content Include="Scripts\bootstrap.min.js">
+      <id>e7b10df6-0205-44c0-9698-28518d9f3393</id>
+    </Content>
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <id>9727b867-98e8-40e1-908f-8337cf6a5061</id>
+    </Content>
+    <Content Include="Scripts\date.format.js">
+      <id>c19d1059-6876-43ba-894e-8ef5918b7d6c</id>
+    </Content>
+    <None Include="KALPIRepository.rximg">
+      <BoundTo>80F52A4F-3299-4A9D-A450-C7E09B2BD6D9</BoundTo>
+      <DependentUpon>KALPIRepository.rxrep</DependentUpon>
+      <imageblob>true</imageblob>
+      <id>cb6c96ef-0f6a-4d91-9c6a-b180f1d7ce2d</id>
+    </None>
+    <None Include="KALPIRepository.rxrep">
+      <id>80F52A4F-3299-4A9D-A450-C7E09B2BD6D9</id>
+      <repoid>a07b9f0c-e2bb-4bd6-a458-e35cc6e86af4</repoid>
+      <reporootid>09cceba5-9f82-44be-aa65-925499136ce1</reporootid>
+    </None>
+    <None Include="Properties\PublishProfiles\Kalpi_Pro_Publish.pubxml">
+      <id>7ec89ae5-20f9-44e3-a731-aa0f95cd33ff</id>
+    </None>
+    <None Include="Scripts\jquery-1.10.2.intellisense.js">
+      <id>0a9b5c6d-17cf-4c7d-856d-188ad12eb857</id>
+    </None>
+    <Content Include="Scripts\jquery-1.10.2.js">
+      <id>428f986d-ffdd-4364-beae-9543beb085fd</id>
+    </Content>
+    <Content Include="Scripts\jquery-1.10.2.min.js">
+      <id>39c2b7d8-25f0-45bc-ade4-0122386f6863</id>
+    </Content>
+    <None Include="Scripts\jquery.validate-vsdoc.js">
+      <id>c21e8db6-00fe-44fb-b366-b2762b953d95</id>
+    </None>
+    <Content Include="Scripts\jquery.validate.js">
+      <id>942c7d4c-e987-4fbe-a196-88b1a38bdfef</id>
+    </Content>
+    <Content Include="Scripts\jquery.validate.min.js">
+      <id>ec948f76-0539-4c2d-882d-3f66f407aa20</id>
+    </Content>
+    <Content Include="Scripts\jquery.validate.unobtrusive.js">
+      <id>2a0b9478-dd18-4eba-9172-68cf6c0dbc71</id>
+    </Content>
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js">
+      <id>794b9ba8-fbd0-47d6-a7ee-10f5522f5716</id>
+    </Content>
+    <Content Include="Scripts\modernizr-2.6.2.js">
+      <id>89ff005f-fd7e-4f32-a2df-a086c1c86fe6</id>
+    </Content>
+    <Content Include="Scripts\respond.js">
+      <id>9d338888-3158-466c-811a-b5652ecd8bbf</id>
+    </Content>
+    <Content Include="Scripts\respond.min.js">
+      <id>95f537fc-e655-46c8-baef-477394f9407f</id>
+    </Content>
+    <Content Include="Scripts\_references.js">
+      <id>9436b271-dcf7-49ab-8c85-6f22f01aac4b</id>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+      <id>6152d912-30db-4190-b005-0a88b1ba3213</id>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <BoundTo>6152d912-30db-4190-b005-0a88b1ba3213</BoundTo>
+      <id>af027fcb-ab9a-4ded-ae7e-094d97e101bf</id>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <BoundTo>6152d912-30db-4190-b005-0a88b1ba3213</BoundTo>
+      <id>a2c42bb4-19f8-42b7-b862-5b7e0bad4e99</id>
+    </Content>
+    <Content Include="Views\Web.config">
+      <id>3e2fd9c4-a8e2-42d3-beb7-95aa2bc6f46c</id>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml">
+      <id>9ab191c1-5e37-42a8-b44b-601e69b721d8</id>
+    </Content>
+    <Content Include="Views\Shared\Error.cshtml">
+      <id>4806b3ea-9f84-4eed-9ae3-18dfaa1016fe</id>
+    </Content>
+    <Content Include="Views\Shared\_Layout.cshtml">
+      <id>f97d8237-943f-4d73-8091-cd0da27c4155</id>
+    </Content>
+    <Content Include="Views\Home\About.cshtml">
+      <id>1c6bbfbd-de41-4601-9f0c-793228eed1cf</id>
+    </Content>
+    <Content Include="Views\Home\Contact.cshtml">
+      <id>a6e1f3ba-c5f1-4369-b726-1c9fe26010bf</id>
+    </Content>
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml">
+      <id>7975718a-f5ee-4c3f-822b-682ba4f74bca</id>
+    </Content>
+    <Content Include="Views\Account\ConfirmEmail.cshtml">
+      <id>1f757b23-17ff-4925-a81f-a85e736ebb90</id>
+    </Content>
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml">
+      <id>202ec45d-d484-4347-8b97-281ce0deb5f1</id>
+    </Content>
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml">
+      <id>9d5e8112-1279-4355-a65d-2d8f26fc35a3</id>
+    </Content>
+    <Content Include="Views\Account\ForgotPassword.cshtml">
+      <id>34de33df-1a4c-40ac-8c07-4b9af2700ac1</id>
+    </Content>
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml">
+      <id>5403ca11-0796-4602-954e-b3df5c957344</id>
+    </Content>
+    <Content Include="Views\Account\Login.cshtml">
+      <id>8811ed32-55de-4f91-aa03-299ccc42ced4</id>
+    </Content>
+    <Content Include="Views\Account\Register.cshtml">
+      <id>9521b348-fe3d-4bc1-9cd9-0bb9c11608bf</id>
+    </Content>
+    <Content Include="Views\Account\ResetPassword.cshtml">
+      <id>f59e6d3b-0f23-44c8-b51b-65be34f0c12f</id>
+    </Content>
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml">
+      <id>46db0b83-e341-4ee6-8948-0d8fa250dbc3</id>
+    </Content>
+    <Content Include="Views\Account\SendCode.cshtml">
+      <id>b2f544f2-6182-4abf-90c6-4e2709338714</id>
+    </Content>
+    <Content Include="Views\Account\VerifyCode.cshtml">
+      <id>fe1df784-05d0-44a5-a366-3271c2f57cdb</id>
+    </Content>
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml">
+      <id>25b1b0b4-4099-42d6-8aa7-4907f6b75757</id>
+    </Content>
+    <Content Include="Views\Manage\ChangePassword.cshtml">
+      <id>87dba0f4-b69c-4ab7-b3ed-165c83213ecb</id>
+    </Content>
+    <Content Include="Views\Manage\Index.cshtml">
+      <id>138fd0c5-5227-4729-adeb-cbc25b0a65fe</id>
+    </Content>
+    <Content Include="Views\Manage\ManageLogins.cshtml">
+      <id>a6638701-eaef-474c-9029-e10c62bb02c6</id>
+    </Content>
+    <Content Include="Views\Manage\SetPassword.cshtml">
+      <id>e3506954-12ab-4385-a766-bd83cac8eecb</id>
+    </Content>
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml">
+      <id>30d1b412-f133-45dd-a4d4-9331a70af625</id>
+    </Content>
+    <Content Include="Views\Shared\Lockout.cshtml">
+      <id>ab188dbf-ce72-4235-b078-f90417236cb5</id>
+    </Content>
+    <Content Include="Views\Shared\_LoginPartial.cshtml">
+      <id>f140181c-c47b-4186-af5c-2eb7d9014133</id>
+    </Content>
+    <Content Include="Views\Home\Index.cshtml">
+      <id>235d3baf-5fd0-43bd-a696-0ad7eb18fc2c</id>
+    </Content>
+    <Content Include="Views\SMSManagement\Index.cshtml">
+      <id>6e5df183-a202-4561-b2f8-2fa25ab2673f</id>
+    </Content>
+    <Content Include="Views\SMTPServerManagement\Index.cshtml">
+      <id>54be1c85-20f4-4680-bc14-1c8ce5a1142e</id>
+    </Content>
+    <Content Include="Views\StateMaster\Index.cshtml">
+      <id>f4338918-5f62-4481-95f5-9ce1ee177b50</id>
+    </Content>
+    <Content Include="Views\CityMaster\Index.cshtml">
+      <id>d31fa24e-cfe6-4d4a-9cca-b11edb20a08f</id>
+    </Content>
+    <Content Include="Views\CompanyProfile\Index.cshtml">
+      <id>7ccd8e7d-5e5f-446b-b66d-416723299dfb</id>
+    </Content>
+    <Content Include="Views\DistributorMaster\Index.cshtml">
+      <id>4bc65a43-2bd8-401d-93cd-b783912aeadd</id>
+    </Content>
+    <Content Include="Views\SalesmanMaster\Index.cshtml">
+      <id>da231a8b-258d-4cf3-96d4-2c6aa22b5e00</id>
+    </Content>
+    <Content Include="Views\CategoryMaster\Index.cshtml">
+      <id>3e9b1237-2698-4fad-b712-400e06fc19e6</id>
+    </Content>
+    <Content Include="Views\RouteMaster\Index.cshtml">
+      <id>f722240d-1059-4bbf-b614-8fb1fdd5c029</id>
+    </Content>
+    <Content Include="Views\RetailOutletMaster\Index.cshtml">
+      <id>b3f284d7-a058-43e6-a067-dd22036c2a33</id>
+    </Content>
+    <Content Include="Views\ProductMaster\Index.cshtml">
+      <id>7daae307-8e83-4784-a43a-4df122167a54</id>
+    </Content>
+    <Content Include="Views\SuperStockIsMaster\Index.cshtml">
+      <id>03c880c2-000d-4acf-b273-b48098060c6d</id>
+    </Content>
+    <Content Include="Views\SchemeBuilder\Index.cshtml">
+      <id>e41ec11d-feb4-4f7a-9e2b-1dfb6bfc36ec</id>
+    </Content>
+    <Content Include="Views\InwardStockCompany\Index.cshtml">
+      <id>28b6e207-3d0f-424a-adc5-dd89ee13e912</id>
+    </Content>
+    <Content Include="Views\OutwardStockCompany\Index.cshtml">
+      <id>a806d21b-187e-47b9-ac14-2dd7e98f9924</id>
+    </Content>
+    <Content Include="Views\TotalStockCompany\Index.cshtml">
+      <id>651ad954-17f2-4b38-af22-5c974537e5e9</id>
+    </Content>
+    <Content Include="Views\PurchaseStockSuperStockist\Index.cshtml">
+      <id>5578e2f5-b4e5-43b2-9d50-244fd95d28bd</id>
+    </Content>
+    <Content Include="Views\PurchaseStockDistibutor\Index.cshtml">
+      <id>c8187d15-a8d4-4980-b6d6-ec89869c8e67</id>
+    </Content>
+    <Content Include="Views\TotalStockSuperStockist\Index.cshtml">
+      <id>21c0c334-d594-4d58-be30-616da9505828</id>
+    </Content>
+    <Content Include="Views\SalesStockSuperStockist\Index.cshtml">
+      <id>3e736c61-7cbc-4dd2-a5ed-3010e1430e3d</id>
+    </Content>
+    <Content Include="Views\SalesStockDistibutor\Index.cshtml">
+      <id>b8688e29-494a-4561-a31a-3d7e7eef5cf9</id>
+    </Content>
+    <Content Include="Views\TotalStockDistibutor\Index.cshtml">
+      <id>08e7f8c8-0f05-4093-a573-091356c838ad</id>
+    </Content>
+    <Content Include="Views\OrderProduct\Index.cshtml">
+      <id>96994b7a-05b9-4d14-b10c-406de7fe0c73</id>
+    </Content>
+    <Content Include="Views\CustomeScheme\Index.cshtml">
+      <id>8d486654-b43f-4620-9f12-49bed8929acb</id>
+    </Content>
+    <Content Include="Views\HeadquarterNotes\Index.cshtml">
+      <id>20c5f6df-4243-4684-a15c-ed96eb6919ec</id>
+    </Content>
+    <Content Include="Views\RetailerPayment\Index.cshtml">
+      <id>8703f151-6cdf-4d7b-a682-8739f2b6b13e</id>
+    </Content>
+    <Content Include="Views\SalesmanAttadanceTime\Index.cshtml">
+      <id>f9b2c976-a62c-4a3e-99af-a29d332fb25d</id>
+    </Content>
+    <Content Include="Views\OrderProductReport\Index.cshtml">
+      <id>7dba25c4-18a5-4cda-8685-f59d1879a6f9</id>
+    </Content>
+    <Content Include="Views\VisitTypeMaster\Index.cshtml">
+      <id>6f13c67e-462c-493d-a9c9-2ac8efa9cc6a</id>
+    </Content>
+    <Content Include="Views\VisitPurposeMaster\Index.cshtml">
+      <id>870a24f8-6745-4bc7-a755-dcc919596c88</id>
+    </Content>
+    <Content Include="Views\VisitMaster\Index.cshtml">
+      <id>5af98463-0dfe-4b7a-8515-6df13a66ea8b</id>
+    </Content>
+    <Content Include="Views\CustomerTypeMaster\Index.cshtml">
+      <id>18b10b79-9dd0-44d3-818f-b90833405cb9</id>
+    </Content>
+    <Content Include="Views\ExpenseTypeMaster\Index.cshtml" />
+    <Content Include="Views\ExpenseModeMaster\Index.cshtml" />
+    <Content Include="Views\ExpenseMaster\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ProductImage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff">
+      <id>77a4f486-5a71-49ee-ac9a-154b99cf9615</id>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.ttf">
+      <id>a65f677e-4266-497e-8b1c-0b970fbeef96</id>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.eot">
+      <id>fd89ee47-91b6-4016-91dc-0ac214e8191d</id>
+    </Content>
+    <Content Include="packages.config">
+      <id>86e63210-a1c5-4a10-9419-9e4ecde14e82</id>
+    </Content>
+    <None Include="Project_Readme.html">
+      <id>52e090fa-c47a-450f-96f2-65bf42dbc419</id>
+    </None>
+    <Content Include="Scripts\jquery-1.10.2.min.map">
+      <id>c16a7d58-e60b-4b5f-98ec-af3d9432e4d8</id>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WS.Framework.Common\WS.Framework.Common.csproj">
+      <Project>{bde98db4-097c-44e0-b9d6-c44aaa82f6dc}</Project>
+      <Name>WS.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WS.Framework.Entity\WS.Framework.Entity.csproj">
+      <Project>{cc8091a9-64a1-4b61-96c0-289d654980ad}</Project>
+      <Name>WS.Framework.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WS.Framework.Logic\WS.Framework.Logic.csproj">
+      <Project>{11a6eaac-1816-4bf3-b258-792937650f26}</Project>
+      <Name>WS.Framework.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62499</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:62499/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <Import Project="$(RanorexTargetsPath)" Condition="Exists('$(RanorexTargetsPath)')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{11A6EAAC-1816-4BF3-B258-792937650F26}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WS.Framework.Logic</RootNamespace>
+    <AssemblyName>WS.Framework.Logic</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <RanorexVersion>7.0</RanorexVersion>
+    <RanorexTargetsPath>$(MSBuildExtensionsPath)\Ranorex$(RanorexVersion)\Ranorex.MSBuild.Targets</RanorexTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ranorex.Core" />
+    <Reference Include="Ranorex.Plugin.Cef" />
+    <Reference Include="Ranorex.Plugin.ChromeWeb" />
+    <Reference Include="Ranorex.Plugin.Flex" />
+    <Reference Include="Ranorex.Plugin.Java" />
+    <Reference Include="Ranorex.Plugin.Mobile" />
+    <Reference Include="Ranorex.Plugin.MozillaWeb" />
+    <Reference Include="Ranorex.Plugin.Msaa" />
+    <Reference Include="Ranorex.Plugin.Office" />
+    <Reference Include="Ranorex.Plugin.Qt" />
+    <Reference Include="Ranorex.Plugin.RawText" />
+    <Reference Include="Ranorex.Plugin.Sap" />
+    <Reference Include="Ranorex.Plugin.Uia" />
+    <Reference Include="Ranorex.Plugin.Web" />
+    <Reference Include="Ranorex.Plugin.WebDriver" />
+    <Reference Include="Ranorex.Plugin.Win32" />
+    <Reference Include="Ranorex.Plugin.WinForms" />
+    <Reference Include="Ranorex.Plugin.Wpf" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CategoryMaster.cs">
+      <id>6dc028bd-e1f2-4499-a834-091422b833e7</id>
+    </Compile>
+    <Compile Include="CityMaster.cs">
+      <id>f10cc78a-b380-4710-8c85-595dab3e2be4</id>
+    </Compile>
+    <Compile Include="CompanyProfile.cs">
+      <id>219a9c7d-39cf-4952-aafc-fa9cb7309ffe</id>
+    </Compile>
+    <Compile Include="CustomerTypeMaster.cs">
+      <id>bdbcb7a9-3298-4acd-b023-f1410a0cea51</id>
+    </Compile>
+    <Compile Include="CustomeScheme.cs">
+      <id>1982f1ff-8a89-4816-8fbe-90366f9316ae</id>
+    </Compile>
+    <Compile Include="DistributorMaster.cs">
+      <id>790694b7-51d0-4635-abaf-d25b87af3357</id>
+    </Compile>
+    <Compile Include="ExpenseMaster.cs" />
+    <Compile Include="ExpenseModeMaster.cs" />
+    <Compile Include="ExpenseTypeMaster.cs" />
+    <Compile Include="HeadquarterNotes.cs">
+      <id>31f81b63-0582-4526-b3f1-0a65757f6fae</id>
+    </Compile>
+    <Compile Include="InwardStockCompany.cs">
+      <id>63887063-4d1a-4544-b9fa-646a9a11cac4</id>
+    </Compile>
+    <Compile Include="OrderProduct.cs">
+      <id>4f54e88e-255d-4236-9aff-edd20abb5c7a</id>
+    </Compile>
+    <Compile Include="OutwardStockCompany.cs">
+      <id>960705ee-bfdf-48d5-bddf-f60fffa21cc9</id>
+    </Compile>
+    <Compile Include="ProductMaster.cs">
+      <id>e41eceb0-eebc-40b3-a254-0af267329a32</id>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <id>8a006f4d-b5bc-4dc8-bbba-911688848622</id>
+    </Compile>
+    <Compile Include="PurchaseStockDistibutor.cs">
+      <id>37a34c45-3f89-448b-b3cc-3b1f05494eeb</id>
+    </Compile>
+    <Compile Include="PurchaseStockSuperStockist.cs">
+      <id>5c2a0dde-63de-436d-b60e-0ac27a1cdd86</id>
+    </Compile>
+    <Compile Include="RetailerPayment.cs">
+      <id>a5005f51-9667-4895-89d2-ba5457207751</id>
+    </Compile>
+    <Compile Include="RetailOutletMaster.cs">
+      <id>1161d156-c3f0-4103-ae8b-a8aa69182527</id>
+    </Compile>
+    <Compile Include="RouteMaster.cs">
+      <id>15d5e0bf-1a12-4d65-ba11-b713e80cc9ee</id>
+    </Compile>
+    <Compile Include="SalesmanAttadance.cs">
+      <id>318ee57d-033f-4b81-bc45-c7a81db19286</id>
+    </Compile>
+    <Compile Include="SalesmanAttadanceTime.cs">
+      <id>24a1b82f-307d-4888-b228-e29c5faabbce</id>
+    </Compile>
+    <Compile Include="SalesmanLatLong.cs">
+      <id>1c41b33f-e7d0-43d5-a721-a9b9f36600ca</id>
+    </Compile>
+    <Compile Include="SalesmanMaster.cs">
+      <id>3ac2c8dd-f245-4e6f-a0b2-3c31340efbb6</id>
+    </Compile>
+    <Compile Include="SalesStockDistibutor.cs">
+      <id>9fae50a4-c67a-44a1-843b-0090e978f4c8</id>
+    </Compile>
+    <Compile Include="SalesStockSuperStockist.cs">
+      <id>be345bf6-b93e-4825-b54c-2f299f8ee1a0</id>
+    </Compile>
+    <Compile Include="SchemeBuilder.cs">
+      <id>deb6f424-1312-4f41-87ae-cf45b40a2a79</id>
+    </Compile>
+    <Compile Include="SMSManagement.cs">
+      <id>31b5ee61-ba03-4b8d-9470-74b808bfe470</id>
+    </Compile>
+    <Compile Include="SMTPServerManagement.cs">
+      <id>83188891-9f42-4e70-8e78-3401d82ed420</id>
+    </Compile>
+    <Compile Include="StateMaster.cs">
+      <id>004d06ab-9b78-4d12-a079-8a7eb1a16508</id>
+    </Compile>
+    <Compile Include="SuperStockIsMaster.cs">
+      <id>27a87f29-7dd0-4a7f-97d5-b9e1cbafd149</id>
+    </Compile>
+    <Compile Include="TotalStockCompany.cs">
+      <id>feb19241-fe33-4e9e-96ff-18150ea25bcf</id>
+    </Compile>
+    <Compile Include="TotalStockDistibutor.cs">
+      <id>1f5b2ffe-72e3-4954-a485-386455edd8b8</id>
+    </Compile>
+    <Compile Include="TotalStockSuperStockist.cs">
+      <id>8aa611f3-205b-494b-b9cb-074990b3c418</id>
+    </Compile>
+    <Compile Include="UserProfile.cs">
+      <id>ccef3912-1add-4edf-80e1-eeb741ec4a9b</id>
+    </Compile>
+    <Compile Include="VisitMaster.cs">
+      <id>1b1c88a9-afd5-41b5-a8f3-ee0695d0d915</id>
+    </Compile>
+    <Compile Include="VisitPurposeMaster.cs">
+      <id>89a5406c-8759-43f5-ab6a-4583dee8fbca</id>
+    </Compile>
+    <Compile Include="VisitTypeMaster.cs">
+      <id>93fa223a-5e4a-4739-8829-015e0bb0205d</id>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WS.Framework.Common\WS.Framework.Common.csproj">
+      <Project>{bde98db4-097c-44e0-b9d6-c44aaa82f6dc}</Project>
+      <Name>WS.Framework.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WS.Framework.Entity\WS.Framework.Entity.csproj">
+      <Project>{cc8091a9-64a1-4b61-96c0-289d654980ad}</Project>
+      <Name>WS.Framework.Entity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(RanorexTargetsPath)" Condition="Exists('$(RanorexTargetsPath)')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

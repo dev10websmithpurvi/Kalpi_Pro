@@ -1,0 +1,216 @@
+﻿@model WS.Framework.Entity.RouteMaster
+@{
+    ViewBag.Title = "Route Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Route Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Area Name</th>
+                                        <th>State</th>
+                                        <th>City</th>
+                                        <th>Is Active</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="ClearControls()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add New Route</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="RouteForm">
+                    <input type="hidden" id="rm_id" name="rm_id" />
+                    <input type="hidden" id="rm_mycityID" name="rm_mycityID" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">State *</label>
+                                <select id="rm_stateid" name="rm_stateid" onchange="BindCity()" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select State</option>
+                                    @foreach (WS.Framework.Entity.StateMaster item in ViewBag.StateList)
+                                    {
+                                        <option value="@item.sm_id">@item.sm_statename</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">City *</label>
+                                <select id="rm_cityid" name="rm_cityid" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Area Name *</label>
+                                <input type="text" class="form-control" id="rm_areaname" name="rm_areaname" maxlength="50" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function Save() {
+            if ($("#rm_stateid").val() == null || $("#rm_stateid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('State required !'); return false; }
+            if ($("#rm_cityid").val() == null || $("#rm_cityid").val() == '') { sweetAlert('City required !'); return false; }
+            if ($("#rm_areaname").val() == null || $("#rm_areaname").val() == '') { sweetAlert('Area Name required !'); return false; }
+
+            var formmodel = $("#RouteForm").serialize();
+            $.post("/RouteMaster/Save", formmodel, function (resdata) {
+                $("#rm_id").val('');
+                $("#con-close-modal").modal('hide');
+                sweetAlert(resdata);
+                GetAll();
+                ClearControls();
+            });
+        }
+
+        function EditRecord(id) {
+            $("#rm_id").val(id)
+            var mData = "{id:'" + id + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RouteMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#rm_stateid").val(mRes[0].rm_stateid);
+                        $("#rm_cityid").val(mRes[0].rm_cityid);
+                        $("#rm_mycityID").val(mRes[0].rm_cityid);
+                        $("#rm_areaname").val(mRes[0].rm_areaname);
+                        BindCity();
+                    }
+                }
+            });
+        }
+
+        function UpdateRecord(id, actionID) {
+            swal({
+                title: "Are you sure ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: (actionID == '1' ? "Yes, delete it!" : "Yes, change it!"),
+                closeOnConfirm: false
+            }, function () {
+
+                var mData = "{id:'" + id + "',ActionType:'" + actionID + "'}";
+                $.ajax({
+                    type: "POST",
+                    url: "/RouteMaster/GeneralAction",
+                    data: mData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (mRes) {
+                        if (actionID == '1') {
+                            swal("Deleted!", "Record delete successfully.", "success");
+                        }
+                        else { swal("Changed!", "Record statue change successfully.", "success"); }
+                        GetAll();
+                    }
+                });
+            });
+        }
+
+        function GetAll() {
+            var mData = "{id:'" + ($("#rm_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#rm_id").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RouteMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].rm_areaname + '</td>';
+                            InnerHTML += '<td>' + mRes[i].sm_statename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cm_cityname + '</td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].rm_id + ' onclick="UpdateRecord(this.id,2)" class="btn btn-' + (mRes[i].rm_isactive == true ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].rm_isactive == true ? 'Active' : 'DeActive') + '</button></td></td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].rm_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
+                                + '<button type="button" id=' + mRes[i].rm_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function ClearControls() {
+            $("#rm_id").val('');
+            $("#rm_stateid").val('00000000-0000-0000-0000-000000000000');
+            $("#rm_cityid").html('');
+            $("#rm_areaname").val('');
+        }
+
+        function BindCity() {
+            var mData = "{id:'" + $("#rm_stateid").val() + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RouteMaster/City_GetAll_ByStateID",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    $("#rm_cityid").html('');
+                    if (mRes.length > 0) {
+                        $("#rm_cityid").append('<option value="00000000-0000-0000-0000-000000000000">Select City</option>');
+                        for (var i = 0; i < mRes.length; i++) {
+                            $("#rm_cityid").append('<option value="' + mRes[i].cm_id + '" ' + ($("#rm_mycityID").val() == mRes[i].cm_id ? 'selected' : '') + '>' + mRes[i].cm_cityname + '</option>');
+                        }
+                    }
+                    else { $("#rm_cityid").html(''); }
+                }
+            });
+        }
+    </script>
+}

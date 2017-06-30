@@ -1,0 +1,206 @@
+﻿
+@{
+    ViewBag.Title = "Distributor Purchase Stock";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Distributor Purchase Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Quentity</th>
+                                        <th>Distibutor</th>
+                                        <th>Superstockist</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="ClearControls()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add Stock Distributor</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="DitibutorForm">
+                    <input type="hidden" id="psd_id" name="psd_id" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select Superstockist</label>
+                                <select id="psd_superid" name="psd_superid" class="form-control" onchange="GetAllDistibutor_SuperWise()">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select Superstockist</option>
+                                    @foreach (WS.Framework.Entity.SuperStockIsMaster item in ViewBag.SuperstockistList)
+                                    {
+                                        <option value="@item.ss_id">@item.ss_name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select Product</label>
+                                <select id="psd_productid" name="psd_productid" class="form-control" onchange="GetSupeStockProductWise()">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select Product</option>
+                                    @foreach (WS.Framework.Entity.ProductMaster item in ViewBag.ProductList)
+                                    {
+                                        <option value="@item.pm_id">@item.pm_name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Superstockist Total Stock</label>
+                                <input type="text" class="form-control" id="tsss_qty" name="tsss_qty" disabled="disabled">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select Distributor</label>
+                                <select id="psd_userid" name="psd_userid" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Quentity *</label>
+                                <input type="text" class="form-control" id="psd_qty" name="psd_qty" maxlength="6" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function Save() {
+            if ($("#psd_superid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Superstockist required !'); return false; }
+            else if ($("#psd_productid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Product required !'); return false; }
+            else if ($("#psd_userid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Distibutor required !'); return false; }
+            else if ($("#tsss_qty").val() == null || $("#tsss_qty").val() == '' || $("#tsss_qty").val() == '0') { sweetAlert('Superstockist Stock Not Available!'); return false; }
+            else if ($("#psd_qty").val() == null || $("#psd_qty").val() == '') { sweetAlert('Qunetity required !'); return false; }
+
+            var formmodel = $("#DitibutorForm").serialize();
+            $.post("/PurchaseStockDistibutor/Save", formmodel, function (resdata) {
+                $("#psd_id").val('');
+                $("#con-close-modal").modal('hide');
+                sweetAlert(resdata);
+                GetAll();
+                ClearControls();
+            });
+        }
+
+        function GetAll() {
+            $.ajax({
+                type: "POST",
+                url: "/PurchaseStockDistibutor/GetAll",
+                data: "",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].pm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].psd_qty + '</td>';
+                            InnerHTML += '<td>' + mRes[i].dm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].ss_name + '</td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function GetAllDistibutor_SuperWise() {
+            var mData = "{id:'" + $("#psd_superid").val() + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/PurchaseStockDistibutor/GetAllDistibutor_BySuperID",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    $("#psd_userid").html('');
+                    if (mRes.length > 0) {
+                        $("#psd_userid").append('<option value="00000000-0000-0000-0000-000000000000">Select Ditibutor</option>');
+                        for (var i = 0; i < mRes.length; i++) {
+                            $("#psd_userid").append('<option value="' + mRes[i].dm_id + '">' + mRes[i].dm_name + '</option>');
+                        }
+                    }
+                    else { $("#psd_userid").html(''); }
+                }
+            });
+        }
+
+        function GetSupeStockProductWise() {
+            var mData = "{pid:'" + $("#psd_productid").val() + "',sid:'" + $("#psd_superid").val() + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/PurchaseStockDistibutor/GetSupeStockProductWise",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes > 0) {
+                        $("#tsss_qty").val(mRes);
+                    }
+                    else {
+                        $("#tsss_qty").val('0');
+                        sweetAlert('Superstockist Stock Not Found For This Product.');
+                    }
+                }
+            });
+        }
+
+        function ClearControls()
+        {
+            $("#psd_superid").val('00000000-0000-0000-0000-000000000000');
+            $("#psd_productid").val('00000000-0000-0000-0000-000000000000');
+            $("#psd_qty").val('');
+            $("#tsss_qty").val('');
+            $("#psd_userid").html('');
+        }
+    </script>
+}

@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "H.Q. Notes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">H.Q Notes Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Salesman</th>
+                                        <th>Notes</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="ClearControls()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add New H.Q Note</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="HQFrom">
+                    <input type="hidden" id="hn_id" name="hn_id" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select State</label>
+                                <select id="hn_salesmanid" name="hn_salesmanid" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select Salesman</option>
+                                    @foreach (WS.Framework.Entity.SalesmanMaster item in ViewBag.SalesmanList)
+                                    {
+                                        <option value="@item.smm_id">@item.smm_name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Note *</label>
+                                <textarea type="text" class="form-control" id="hn_note" name="hn_note" maxlength="1000" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function Save() {
+            if ($("#hn_note").val() == null || $("#hn_note").val() == '') { sweetAlert('Note required !'); return false; }
+            else if ($("#hn_salesmanid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Salesman required !'); return false; }
+
+            var formmodel = $("#HQFrom").serialize();
+            $.post("/HeadquarterNotes/Save", formmodel, function (resdata) {
+                $("#hn_id").val('');
+                $("#con-close-modal").modal('hide');
+                sweetAlert(resdata);
+                GetAll();
+                ClearControls();
+            });
+        }
+
+        function EditRecord(id) {
+            $("#hn_id").val(id)
+            var mData = "{id:'" + id + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/HeadquarterNotes/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#hn_note").val(mRes[0].hn_note);
+                        $("#hn_salesmanid").val(mRes[0].hn_salesmanid);
+                    }
+                }
+            });
+        }
+
+        function GetAll() {
+            var mData = "{id:'" + ($("#hn_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#hn_id").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/HeadquarterNotes/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].smm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].hn_note + '</td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].hn_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button></td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function ClearControls() {
+            $("#hn_id").val('');
+            $("#hn_note").val('');
+            $("#hn_salesmanid").val('00000000-0000-0000-0000-000000000000');
+        }
+    </script>
+}

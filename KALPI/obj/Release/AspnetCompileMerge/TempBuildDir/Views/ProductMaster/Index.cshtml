@@ -1,0 +1,246 @@
+﻿@model WS.Framework.Entity.ProductMaster
+@{
+    ViewBag.Title = "Product Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Product Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Image</th>
+                                        <th>Product Name</th>
+                                        <th>Price</th>
+                                        <th>Category</th>
+                                        <th>Is Active</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" onclick="ClearControls()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add New Product</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="ProductForm">
+                    <input type="hidden" id="pm_id" name="pm_id" value="00000000-0000-0000-0000-000000000000" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Product Name *</label>
+                                <input type="text" class="form-control" id="pm_name" name="pm_name" maxlength="50" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Price *</label>
+                                <input type="text" class="form-control" id="pm_price" name="pm_price" maxlength="6" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Category *</label>
+                                <select id="pm_categoryid" name="pm_categoryid" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select Category</option>
+                                    @foreach (WS.Framework.Entity.CategoryMaster item in ViewBag.CategoryList)
+                                    {
+                                        <option value="@item.cm_id">@item.cm_name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select Image</label>
+                                <input type="file" class="" id="FileUpload1" name="FileUpload1">
+                                <input type="hidden" id="pm_oldImageName" name="pm_oldImageName" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        $("#pm_price").keydown(function (e) {
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 || (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        function Save() {
+            if ($("#pm_name").val() == null || $("#pm_name").val() == '') { sweetAlert('Product Name required !'); return false; }
+            if ($("#pm_price").val() == null || $("#pm_price").val() == '') { sweetAlert('Price required !'); return false; }
+            if ($("#pm_categoryid").val() == null || $("#pm_categoryid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Category required !'); return false; }
+
+            var fileUpload = $("#FileUpload1").get(0);
+            var files = fileUpload.files;
+            if (files.length > 0) {
+                $.ajaxSetup({
+                    async: false
+                });
+
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                fileData.append("pm_id", $("#pm_id").val());
+                fileData.append("pm_name", $("#pm_name").val());
+                fileData.append("pm_price", $("#pm_price").val());
+                fileData.append("pm_categoryid", $("#pm_categoryid").val());
+                fileData.append("pm_productimage", $("#pm_oldImageName").val());
+
+                $.ajax({
+                    url: '/ProductMaster/Save',
+                    type: "POST",
+                    async: false,
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        $("#pm_id").val('');
+                        $("#con-close-modal").modal('hide');
+                        sweetAlert(result.Message);
+                        GetAll();
+                    },
+                    error: function (err) {
+                    }
+                });
+            } else {
+                sweetAlert("Please upload atleast one product image."); return;
+            }
+        }
+
+        function EditRecord(id) {
+            $("#pm_id").val(id)
+            var mData = "{id:'" + id + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/ProductMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#pm_name").val(mRes[0].pm_name);
+                        $("#pm_price").val(mRes[0].pm_price);
+                        $("#pm_categoryid").val(mRes[0].pm_categoryid);
+                        $("#pm_oldImageName").val(mRes[0].pm_productimage);
+                    }
+                }
+            });
+        }
+
+        function UpdateRecord(id, actionID) {
+            swal({
+                title: "Are you sure ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: (actionID == '1' ? "Yes, delete it!" : "Yes, change it!"),
+                closeOnConfirm: false
+            }, function () {
+
+                var mData = "{id:'" + id + "',ActionType:'" + actionID + "'}";
+                $.ajax({
+                    type: "POST",
+                    url: "/ProductMaster/GeneralAction",
+                    data: mData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (mRes) {
+                        if (actionID == '1') {
+                            swal("Deleted!", "Record delete successfully.", "success");
+                        }
+                        else { swal("Changed!", "Record statue change successfully.", "success"); }
+                        GetAll();
+                    }
+                });
+            });
+        }
+
+        function GetAll() {
+            var mData = "{id:'" + ($("#pm_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#pm_id").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/ProductMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td><img style="height:160px;width:160px;" src="/ProductImage/' + mRes[i].pm_productimage + '" /></td>';
+                            InnerHTML += '<td>' + mRes[i].pm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].pm_price + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cm_name + '</td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].pm_id + ' onclick="UpdateRecord(this.id,2)" class="btn btn-' + (mRes[i].pm_isactive == true ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].pm_isactive == true ? 'Active' : 'DeActive') + '</button></td></td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].pm_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
+                                + '<button type="button" id=' + mRes[i].pm_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function ClearControls() {
+            $("#pm_id").val('00000000-0000-0000-0000-000000000000');
+            $("#pm_name").val('');
+            $("#pm_price").val('');
+            $("#pm_categoryid").val('00000000-0000-0000-0000-000000000000');
+            $("#pm_productimage").val('');
+        }
+    </script>
+}

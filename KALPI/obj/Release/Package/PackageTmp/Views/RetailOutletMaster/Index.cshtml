@@ -1,0 +1,421 @@
+﻿@model WS.Framework.Entity.RetailOutletMaster
+@{
+    ViewBag.Title = "Outlet Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Outlet Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Outlet Name</th>
+                                        <th>Distibutor Name</th>
+                                        <th>Email ID</th>
+                                        <th>Mobile No</th>
+                                        <th>State</th>
+                                        <th>City</th>
+                                        <th>Area</th>
+                                        <th>PIN Code</th>
+                                        <th>DOB</th>
+                                        <th>Is Active</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="ClearControls()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add New Outlet</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="OutletForm">
+                    <input type="hidden" id="rom_id" name="rom_id" />
+                    <input type="hidden" id="rom_userid" name="rom_userid" />
+                    <input type="hidden" id="rom_mycityID" name="rom_mycityID" />
+                    <input type="hidden" id="rom_myareaID" name="rom_myareaID" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Distibutor Name *</label>
+                                <select id="rom_distibutorid" name="rom_distibutorid" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select Distibutor</option>
+                                    @foreach (WS.Framework.Entity.DistributorMaster item in ViewBag.DistibutorList)
+                                    {
+                                        <option value="@item.dm_id">@item.dm_name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Outlet Name *</label>
+                                <input type="text" id="rom_name" name="rom_name" class="form-control" maxlength="50" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Email ID *</label>
+                                <input type="text" id="rom_emailid" name="rom_emailid" class="form-control" maxlength="50" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Mobile No *</label>
+                                <input type="text" id="rom_mobileno" name="rom_mobileno" class="form-control" maxlength="10" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">State *</label>
+                                <select id="rom_stateid" name="rom_stateid" onchange="BindCity()" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select State</option>
+                                    @foreach (WS.Framework.Entity.StateMaster item in ViewBag.StateList)
+                                    {
+                                        <option value="@item.sm_id">@item.sm_statename</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">City *</label>
+                                <select id="rom_cityid" name="rom_cityid" onchange="BindRoute()" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Route *</label>
+                                <select id="rom_areaid" name="rom_areaid" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Address *</label>
+                                <textarea type="text" class="form-control" id="rom_address" maxlength="500" name="rom_address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">PIN Code</label>
+                                <input type="text" class="form-control" id="rom_pincode" maxlength="6" name="rom_pincode" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">DOB</label>
+                                <input type="text" class="form-control" id="rom_dob" name="rom_dob" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+
+            jQuery('#rom_dob').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoclose: true
+            });
+        });
+
+        $("#rom_mobileno, #rom_pincode").keydown(function (e) {
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        function Save() {
+            if ($("#rom_name").val() == null || $("#rom_name").val() == '') { sweetAlert('Outlet Name required !'); return false; }
+            if ($("#rom_emailid").val() == null || $("#rom_emailid").val() == '') { sweetAlert('Email ID required !'); return false; }
+            if ($("#rom_mobileno").val() == null || $("#rom_mobileno").val() == '') { sweetAlert('Mobile No required !'); return false; }
+
+            if ($("#rom_stateid").val() == null || $("#rom_stateid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('State required !'); return false; }
+            if ($("#rom_cityid").val() == null || $("#rom_cityid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('City required !'); return false; }
+            if ($("#rom_areaid").val() == null || $("#rom_areaid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Area required !'); return false; }
+            if ($("#rom_distibutorid").val() == null || $("#rom_distibutorid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Distibutor required !'); return false; }
+
+            var formmodel = "Email=" + $("#rom_emailid").val() + "&Mobile=" + $("#rom_mobileno").val() + "&UserType=4&DisplayName=" + $("#rom_name").val() + "";
+
+            if ($("#rom_id").val() == '00000000-0000-0000-0000-000000000000') {
+
+                $.post("/Account/RegisterUsers", formmodel, function (resdata) {
+                    if (resdata.EntryStatus == true) {
+                        $("#smm_userid").val(resdata.ReturnID);
+
+                        if ($("#rom_dob").val().length > 1) {
+                            $("#rom_dob").val(DateFormat($("#rom_dob").val()));
+                        }
+                        else { $("#rom_dob").val('1900-01-01') }
+
+                        var formmodel = $("#OutletForm").serialize();
+                        $.post("/RetailOutletMaster/Save", formmodel, function (resdata) {
+                            $("#rom_id").val('');
+                            $("#con-close-modal").modal('hide');
+                            sweetAlert(resdata);
+                            GetAll();
+                            ClearControls();
+                        });
+                    }
+                    else {
+                        sweetAlert(resdata.Messages);
+                    }
+                });
+            }
+            else
+            {
+                if ($("#rom_dob").val().length > 1) {
+                    $("#rom_dob").val(DateFormat($("#rom_dob").val()));
+                }
+                else { $("#rom_dob").val('1900-01-01') }
+
+                var formmodel = $("#OutletForm").serialize();
+                $.post("/RetailOutletMaster/Save", formmodel, function (resdata) {
+                    $("#rom_id").val('');
+                    $("#con-close-modal").modal('hide');
+                    sweetAlert(resdata);
+                    GetAll();
+                    ClearControls();
+                });
+            }
+        }
+
+        function UpdateRecord(id, actionID) {
+            swal({
+                title: "Are you sure ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: (actionID == '1' ? "Yes, delete it!" : "Yes, change it!"),
+                closeOnConfirm: false
+            }, function () {
+
+                var mData = "{id:'" + id + "',ActionType:'" + actionID + "'}";
+                $.ajax({
+                    type: "POST",
+                    url: "/RetailOutletMaster/GeneralAction",
+                    data: mData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (mRes) {
+                        if (actionID == '1') {
+                            swal("Deleted!", "Record delete successfully.", "success");
+                        }
+                        else { swal("Changed!", "Record statue change successfully.", "success"); }
+                        GetAll();
+                    }
+                });
+            });
+        }
+
+        function GetAll() {
+            var mData = "{id:'" + ($("#rom_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#rom_id").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RetailOutletMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].rom_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].dm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rom_emailid + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rom_mobileno + '</td>';
+                            InnerHTML += '<td>' + mRes[i].sm_statename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cm_cityname + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rm_areaname + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rom_pincode + '</td>';
+                            InnerHTML += '<td>' + formatDate(mRes[i].rom_dob.substring(6, mRes[i].rom_dob.length - 2), false) + '</td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].rom_id + ' onclick="UpdateRecord(this.id,2)" class="btn btn-' + (mRes[i].rom_isactive == true ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].rom_isactive == true ? 'Active' : 'DeActive') + '</button></td></td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].rom_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
+                                + '<button type="button" id=' + mRes[i].rom_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function ClearControls() {
+            $("#rom_id").val('');
+            $("#rom_mycityID").val('');
+            $("#rom_myareaID").val('');
+            $("#rom_name").val('');
+            $("#rom_emailid").val('');
+            $("#rom_mobileno").val('');
+            $("#rom_stateid").val('00000000-0000-0000-0000-000000000000');
+            $("#rom_distibutorid").val('00000000-0000-0000-0000-000000000000');
+            $("#rom_cityid").html('');
+            $("#rom_areaid").html('');
+            $("#rom_address").val('');
+            $("#rom_pincode").val('');
+            $("#rom_dob").val('');
+        }
+
+        function BindCity() {
+            var mData = "{id:'" + $("#rom_stateid").val() + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RetailOutletMaster/City_GetAll_ByStateID",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    $("#rom_cityid").html('');
+                    if (mRes.length > 0) {
+                        $("#rom_cityid").append('<option value="00000000-0000-0000-0000-000000000000">Select City</option>');
+                        for (var i = 0; i < mRes.length; i++) {
+                            $("#rom_cityid").append('<option value="' + mRes[i].cm_id + '" ' + ($("#rom_mycityID").val() == mRes[i].cm_id ? 'selected' : '') + '>' + mRes[i].cm_cityname + '</option>');
+                        }
+                    }
+                    else { $("#rom_cityid").html(''); }
+                }
+            });
+        }
+
+        function BindRoute() {
+            var mData = "{id:'" + ($("#rom_cityid").val() == null ? $("#rom_mycityID").val() : $("#rom_cityid").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RetailOutletMaster/Route_GetAll_ByCityID",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    $("#rom_areaid").html('');
+                    if (mRes.length > 0) {
+                        $("#rom_areaid").append('<option value="00000000-0000-0000-0000-000000000000">Select Route</option>');
+                        for (var i = 0; i < mRes.length; i++) {
+                            $("#rom_areaid").append('<option value="' + mRes[i].rm_id + '" ' + ($("#rom_myareaID").val() == mRes[i].rm_id ? 'selected' : '') + '>' + mRes[i].rm_areaname + '</option>');
+                        }
+                    }
+                    else { $("#rom_areaid").html(''); }
+                }
+            });
+        }
+
+        function EditRecord(id) {
+            $("#rom_id").val(id)
+            var mData = "{id:'" + id + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/RetailOutletMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#rom_name").val(mRes[0].rom_name);
+                        $("#rom_distibutorid").val(mRes[0].rom_distibutorid);
+                        $("#rom_emailid").val(mRes[0].rom_emailid);
+                        $("#rom_mobileno").val(mRes[0].rom_mobileno);
+                        $("#rom_stateid").val(mRes[0].rom_stateid);
+                        $("#rom_cityid").val(mRes[0].rom_cityid);
+                        $("#rom_areaid").val(mRes[0].rom_areaid);
+                        $("#rom_address").val(mRes[0].rom_address);
+                        $("#rom_pincode").val(mRes[0].rom_pincode);
+                        $("#rom_dob").val(formatDate(mRes[0].rom_dob.substring(6, mRes[0].rom_dob.length - 2), false));
+                        $("#rom_mycityID").val(mRes[0].rom_cityid);
+                        $("#rom_myareaID").val(mRes[0].rom_areaid);
+                        $("#smm_userid").val(mRes[0].smm_userid);
+                        BindCity();
+                        BindRoute();
+                    }
+                }
+            });
+        }
+
+        function formatDate(ms, displayTime) {
+            var date = new Date(parseInt(ms));
+            var hour = date.getHours();
+            var mins = date.getMinutes() + '';
+            var time = "AM";
+            // find time
+            if (hour >= 12) {
+                time = "PM";
+            }
+            // fix hours format
+            if (hour > 12) {
+                hour -= 12;
+            }
+            else if (hour == 0) {
+                hour = 12;
+            }
+            // fix minutes format
+            if (mins.length == 1) {
+                mins = "0" + mins;
+            }
+
+            // return formatted date time string
+            if (displayTime)
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
+            else
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear();
+        }
+
+        function DateFormat(Date) {
+            var d = '';
+            var n = Date.indexOf("/");
+            if (n > 0) {
+                d = Date.split('/')[1] + "/" + Date.split('/')[0] + "/" + Date.split('/')[2];
+            }
+            else {
+                d = Date.split('-')[1] + "-" + Date.split('-')[0] + "-" + Date.split('-')[2];
+            }
+            return d;
+        }
+    </script>
+}

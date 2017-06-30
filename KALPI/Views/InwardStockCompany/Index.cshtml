@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewBag.Title = "Inward Stock Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Inward Stock Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Quentity</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="ClearControls()" aria-hidden="true">×</button>
+                <h4 class="modal-title">Inward Stock</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="InwardFrom">
+                    <input type="hidden" id="isc_id" name="isc_id" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select Product</label>
+                                <select id="isc_productid" name="isc_productid" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select Product</option>
+                                    @foreach (WS.Framework.Entity.ProductMaster item in ViewBag.ProductList)
+                                    {
+                                        <option value="@item.pm_id">@item.pm_name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Quantity *</label>
+                                <input type="tel" class="form-control" id="isc_qty" name="isc_qty" maxlength="6" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        $("#isc_qty").keydown(function (e) {
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        function Save() {
+            if ($("#isc_productid").val() == '00000000-0000-0000-0000-000000000000') { sweetAlert('Product required !'); return false; }
+            else if ($("#isc_qty").val() == null || $("#isc_qty").val() == '') { sweetAlert('Quentity required !'); return false; }
+
+            var formmodel = $("#InwardFrom").serialize();
+            $.post("/InwardStockCompany/Save", formmodel, function (resdata) {
+                $("#isc_id").val('');
+                $("#con-close-modal").modal('hide');
+                sweetAlert(resdata);
+                GetAll();
+                ClearControls();
+            });
+        }
+
+        function GetAll() {
+            $.ajax({
+                type: "POST",
+                url: "/InwardStockCompany/GetAll",
+                data: "",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].pm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].isc_qty + '</td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function ClearControls() {
+            $("#isc_id").val('');
+            $("#isc_qty").val('');
+            $("#isc_productid").val('00000000-0000-0000-0000-000000000000');
+        }
+    </script>
+}

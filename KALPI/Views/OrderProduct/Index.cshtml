@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Order Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Order Product Record(s)</h3>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>New Quentity</th>
+                                        <th>Offtake Quentity</th>
+                                        <th>Delivery Date</th>
+                                        <th>Retailer</th>
+                                        <th>Scheme</th>
+                                        <th>Free Quentity</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function GetAll() {
+            $.ajax({
+                type: "POST",
+                url: "/OrderProduct/GetAll",
+                data: "",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].pm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].op_neworderqty + '</td>';
+                            InnerHTML += '<td>' + mRes[i].op_offtackqty + '</td>';
+                            InnerHTML += '<td>' + formatDate(mRes[i].op_expecteddekiverydt.substring(6, mRes[i].op_expecteddekiverydt.length - 2), false) + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rom_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].sb_schemename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].op_freeqty + '</td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function formatDate(ms, displayTime) {
+            var date = new Date(parseInt(ms));
+            var hour = date.getHours();
+            var mins = date.getMinutes() + '';
+            var time = "AM";
+            // find time
+            if (hour >= 12) {
+                time = "PM";
+            }
+            // fix hours format
+            if (hour > 12) {
+                hour -= 12;
+            }
+            else if (hour == 0) {
+                hour = 12;
+            }
+            // fix minutes format
+            if (mins.length == 1) {
+                mins = "0" + mins;
+            }
+
+            // return formatted date time string
+            if (displayTime)
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
+            else
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear();
+        }
+    </script>
+}

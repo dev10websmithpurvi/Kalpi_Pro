@@ -1,0 +1,362 @@
+﻿@model WS.Framework.Entity.SalesmanMaster
+@{
+    ViewBag.Title = "Salesman Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Salesman Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email ID</th>
+                                        <th>Mobile No</th>
+                                        <th>City</th>
+                                        <th>State</th>
+                                        <th>PIN Code</th>
+                                        <th>DOB</th>
+                                        <th>Is Active</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" onclick="ClearControls()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add New Salesman</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="SalesMasterForm">
+                    <input type="hidden" id="smm_id" name="smm_id" />
+                    <input type="hidden" id="smm_userid" name="smm_userid" />
+                    <input type="hidden" id="smm_mycityID" name="smm_mycityID" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Name *</label>
+                                <input type="text" class="form-control" id="smm_name" name="smm_name" maxlength="50" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Email ID *</label>
+                                <input type="text" class="form-control" id="smm_emailid" name="smm_emailid" maxlength="50" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Mobile No *</label>
+                                <input type="text" class="form-control" id="smm_mobileno" name="smm_mobileno" maxlength="10" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Address</label>
+                                <textarea type="text" class="form-control" id="smm_address" maxlength="500" name="smm_address"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select State</label>
+                                <select id="smm_stateid" name="smm_stateid" onchange="BindCity()" class="form-control">
+                                    <option value="00000000-0000-0000-0000-000000000000">Select State</option>
+                                    @foreach (WS.Framework.Entity.StateMaster item in ViewBag.StateList)
+                                    {
+                                        <option value="@item.sm_id">@item.sm_statename</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Select City</label>
+                                <select id="smm_cityid" name="smm_cityid" class="form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">PIN Code</label>
+                                <input type="text" class="form-control" id="smm_pincode" maxlength="6" name="smm_pincode">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">Birth Date</label>
+                                <input type="text" class="form-control" id="smm_dob" name="smm_dob">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+
+            jQuery('#smm_dob').datepicker({
+                format: 'dd/mm/yyyy',
+                todayHighlight: true,
+                autoclose: true
+            });
+        });
+
+        $("#smm_mobileno, #smm_pincode").keydown(function (e) {
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13]) !== -1 || (e.keyCode == 65 && (e.ctrlKey === true || e.metaKey === true)) || (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+        function Save() {
+            if ($("#smm_name").val() == null || $("#smm_name").val() == '') { sweetAlert('Name required !'); return false; }
+            else if ($("#smm_emailid").val() == null || $("#smm_emailid").val() == '') { sweetAlert('Email ID required !'); return false; }
+            else if ($("#smm_mobileno").val() == null || $("#smm_mobileno").val() == '') { sweetAlert('Mobile No required !'); return false; }
+
+            var formmodel = "Email=" + $("#smm_emailid").val() + "&Mobile=" + $("#smm_mobileno").val() + "&UserType=3&DisplayName=" + $("#smm_name").val() + "";
+            if ($("#smm_id").val() == '00000000-0000-0000-0000-000000000000') {
+
+                $.post("/Account/RegisterUsers", formmodel, function (resdata) {
+                    if (resdata.EntryStatus == true) {
+                        $("#smm_userid").val(resdata.ReturnID);
+
+                        if ($("#smm_dob").val().length > 1) {
+                            $("#smm_dob").val(DateFormat($("#smm_dob").val()));
+                        }
+                        else { $("#smm_dob").val('1900-01-01') }
+
+                        var formmodel = $("#SalesMasterForm").serialize();
+                        $.post("/SalesmanMaster/Save", formmodel, function (resdata) {
+                            $("#smm_id").val('');
+                            $("#con-close-modal").modal('hide');
+                            sweetAlert(resdata);
+                            GetAll();
+                            ClearControls();
+                        });
+                    }
+                    else {
+                        sweetAlert(resdata.Messages);
+                    }
+                });
+            }
+            else {
+                if ($("#smm_dob").val().length > 1) {
+                    $("#smm_dob").val(DateFormat($("#smm_dob").val()));
+                }
+                else { $("#smm_dob").val('1900-01-01') }
+
+                var formmodel = $("#SalesMasterForm").serialize();
+                $.post("/SalesmanMaster/Save", formmodel, function (resdata) {
+                    $("#smm_id").val('');
+                    $("#con-close-modal").modal('hide');
+                    sweetAlert(resdata);
+                    GetAll();
+                    ClearControls();
+                });
+            }
+        }
+
+        function BindCity() {
+            var mData = "{id:'" + $("#smm_stateid").val() + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/SalesmanMaster/City_GetAll_ByStateID",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    $("#smm_cityid").html('');
+                    if (mRes.length > 0) {
+                        $("#smm_cityid").append('<option value="00000000-0000-0000-0000-000000000000">Select City</option>');
+                        for (var i = 0; i < mRes.length; i++) {
+                            $("#smm_cityid").append('<option value="' + mRes[i].cm_id + '" ' + ($("#smm_mycityID").val() == mRes[i].cm_id ? 'selected' : '') + '>' + mRes[i].cm_cityname + '</option>');
+                        }
+                    }
+                    else { $("#smm_cityid").html(''); }
+                }
+            });
+        }
+
+        function EditRecord(id) {
+            $("#smm_id").val(id)
+            var mData = "{id:'" + id + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/SalesmanMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#smm_name").val(mRes[0].smm_name);
+                        $("#smm_emailid").val(mRes[0].smm_emailid);
+                        $("#smm_mobileno").val(mRes[0].smm_mobileno);
+                        $("#smm_address").val(mRes[0].smm_address);
+                        $("#smm_stateid").val(mRes[0].smm_stateid);
+                        $("#smm_mycityID").val(mRes[0].smm_cityid);
+                        $("#smm_cityid").val(mRes[0].smm_cityid);
+                        $("#smm_pincode").val(mRes[0].smm_pincode);
+                        $("#smm_dob").val(formatDate(mRes[0].smm_dob.substring(6, mRes[0].smm_dob.length - 2), false));
+                        $("#smm_userid").val(mRes[0].smm_userid);
+                        BindCity();
+       
+                    }
+                }
+            });
+        }
+
+        function UpdateRecord(id, actionID) {
+            swal({
+                title: "Are you sure ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: (actionID == '1' ? "Yes, delete it!" : "Yes, change it!"),
+                closeOnConfirm: false
+            }, function () {
+
+                var mData = "{id:'" + id + "',ActionType:'" + actionID + "'}";
+                $.ajax({
+                    type: "POST",
+                    url: "/SalesmanMaster/GeneralAction",
+                    data: mData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (mRes) {
+                        if (actionID == '1') {
+                            swal("Deleted!", "Record delete successfully.", "success");
+                        }
+                        else { swal("Changed!", "Record statue change successfully.", "success"); }
+                        GetAll();
+                    }
+                });
+            });
+        }
+
+        function GetAll() {
+            var mData = "{id:'" + ($("#smm_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#smm_id").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/SalesmanMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].smm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].smm_emailid + '</td>';
+                            InnerHTML += '<td>' + mRes[i].smm_mobileno + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cm_cityname + '</td>';
+                            InnerHTML += '<td>' + mRes[i].sm_statename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].smm_pincode + '</td>';
+                            InnerHTML += '<td>' + formatDate(mRes[i].smm_dob.substring(6, mRes[i].smm_dob.length - 2), false) + '</td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].smm_id + ' onclick="UpdateRecord(this.id,2)" class="btn btn-' + (mRes[i].smm_isactive == true ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].smm_isactive == true ? 'Active' : 'DeActive') + '</button></td></td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].smm_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
+                                + '<button type="button" id=' + mRes[i].smm_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function formatDate(ms, displayTime) {
+            var date = new Date(parseInt(ms));
+            var hour = date.getHours();
+            var mins = date.getMinutes() + '';
+            var time = "AM";
+            // find time
+            if (hour >= 12) {
+                time = "PM";
+            }
+            // fix hours format
+            if (hour > 12) {
+                hour -= 12;
+            }
+            else if (hour == 0) {
+                hour = 12;
+            }
+            // fix minutes format
+            if (mins.length == 1) {
+                mins = "0" + mins;
+            }
+
+            // return formatted date time string
+            if (displayTime)
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
+            else
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear();
+        }
+
+        function ClearControls() {
+            $("#smm_id").val('');
+            $("#smm_mycityID").val('');
+            $("#smm_name").val('');
+            $("#smm_emailid").val('');
+            $("#smm_mobileno").val('');
+            $("#smm_address").val('');
+            $("#smm_stateid").val('00000000-0000-0000-0000-000000000000');
+            $("#smm_cityid").html('');
+            $("#smm_pincode").val('');
+            $("#smm_dob").val('');
+        }
+
+        function DateFormat(Date) {
+            var d = '';
+            var n = Date.indexOf("/");
+            if (n > 0) {
+                d = Date.split('/')[1] + "/" + Date.split('/')[0] + "/" + Date.split('/')[2];
+            }
+            else {
+                d = Date.split('-')[1] + "-" + Date.split('-')[0] + "-" + Date.split('-')[2];
+            }
+            return d;
+        }
+    </script>
+}

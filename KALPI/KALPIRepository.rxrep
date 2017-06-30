@@ -1,0 +1,111 @@
+﻿<repository
+id="a07b9f0c-e2bb-4bd6-a458-e35cc6e86af4"
+name="KALPIRepository"
+rxversion="7.0">
+	<codegen
+	classname="KALPIRepository"
+	namespace="KALPI">
+	</codegen>
+	<rootfolder
+	capname="unknown"
+	id="09cceba5-9f82-44be-aa65-925499136ce1"
+	isrooted="True"
+	name="Root"
+	searchtimeout="0ms"
+	usecache="True">
+		<appfolder
+		addcaps="form,uiautomation,nativewindow,windowsapp"
+		capname="windowsapp"
+		id="45208ce9-229f-4fb4-8978-48a5f38dca3c"
+		isrooted="True"
+		name="Start"
+		refpath="/winapp[@packagename='Microsoft.Windows.ShellExperienceHost' and @appid='App' and @name='Start']"
+		searchtimeout="30000ms"
+		usecache="True">
+			<item
+			addcaps="listitem,uiautomation,uiautomationinvoke,uiautomationvirtualizeditem"
+			capname="listitem"
+			id="ac030688-56ea-4bb7-b3c7-90a98bdfaa25"
+			name="TileMicrosoftBingFinance8wekyb3d8bbwe"
+			refimgid="57c9a0b5-3b12-4b2a-966f-a90435a945ee"
+			refpath="/winapp[@packagename='Microsoft.Windows.ShellExperienceHost' and @appid='App' and @name='Start']/form/list/container[@automationid='{9a072f49-836b-4baf-ad70-e3dc6cdb068f}']/listitem[@automationid='tile-Microsoft.BingFinance_8wekyb3d8bbwe!AppexFinance']"
+			searchtimeout="30000ms">
+				/winapp[@appid='App' and @name='Start']//container[@automationid='{9a072f49-836b-4baf-ad70-e3dc6cdb068f}']/listitem[@automationid='tile-Microsoft.BingFinance_8wekyb3d8bbwe!AppexFinance']
+			</item>
+			<item
+			addcaps="container,uiautomation,uiautomationinvoke,uiautomationvirtualizeditem"
+			capname="container"
+			id="74c76b2b-923f-4105-92bb-d589e4128f58"
+			name="Container9a072f49836b4bafAd70E3dc6c"
+			refimgid="77baad37-c864-450a-b6e5-4785c822b7e4"
+			refpath="/winapp[@packagename='Microsoft.Windows.ShellExperienceHost' and @appid='App' and @name='Start']/form/list/container[@automationid='{9a072f49-836b-4baf-ad70-e3dc6cdb068f}']"
+			searchtimeout="30000ms">
+				/winapp[@appid='App' and @name='Start']/?/?/list[@automationid='groupItems']/container[@automationid='{9a072f49-836b-4baf-ad70-e3dc6cdb068f}']
+			</item>
+			<item
+			addcaps="listitem,uiautomation,uiautomationinvoke,uiautomationvirtualizeditem"
+			capname="listitem"
+			id="3bc72b96-cd37-4957-aa8f-cb075c420096"
+			name="TileMicrosoftXboxApp8wekyb3d8bbweMicr"
+			refimgid="100ead4b-f6a7-446e-9e78-0c5c4f151f81"
+			refpath="/winapp[@packagename='Microsoft.Windows.ShellExperienceHost' and @appid='App' and @name='Start']/form/list/container[@automationid='{9a072f49-836b-4baf-ad70-e3dc6cdb068f}']/listitem[@automationid='tile-Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp']"
+			searchtimeout="30000ms">
+				/winapp[@appid='App' and @name='Start']//container[@automationid='{9a072f49-836b-4baf-ad70-e3dc6cdb068f}']/listitem[@automationid='tile-Microsoft.XboxApp_8wekyb3d8bbwe!Microsoft.XboxApp']
+			</item>
+			<basepath>
+				/winapp[@appid='App' and @name='Start']
+			</basepath>
+			<icon>
+				iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAABTSURBVDhPxY5BCgAgCAR7nf/3RYaHlZQOWlIL
+g2g5OIhIbugRZMPMhqYsiHECrRWw4wS7rPP4V2tKsIIZ6vsLAN7KFwD0vRdUwI4JTmKCG34LSCYc
+86HMBTwY0AAAAABJRU5ErkJggg==
+			</icon>
+		</appfolder>
+		<appfolder
+		addcaps="form,nativewindow"
+		capname="form"
+		id="58359e94-b739-4147-89b3-b8b71e5dda86"
+		isrooted="True"
+		name="KALPILoginMozillaFirefoxPrivate"
+		refpath="/form[@title='KALPI | Login - Mozilla Firefox (Private Browsing)']"
+		searchtimeout="30000ms"
+		usecache="True">
+			<item
+			addcaps="text,accessible"
+			capname="text"
+			id="b9d64702-5ece-417a-afe1-f48361783b60"
+			name="Password"
+			refimgid="b01e88b9-6a50-4bc7-a35b-cdaa8c910a1d"
+			refpath="/form[@title~'^KALPI\ \|\ Login\ -\ Mozilla\ F']/container/container[7]/element/container/element/element/element[2]/element/element[2]/element/text[@accessiblename='Password']"
+			searchtimeout="30000ms">
+				/form[@title~'^KALPI\ \|\ Login\ -\ Mozilla\ F']/container[@accessiblerole='Grouping']/container[7]/?/?/container[@accessiblename='KALPI | Login']/element/element[@accessiblerole='None']/element[2]/element/element[2]/?/?/text[@accessiblename='Password']
+			</item>
+			<basepath>
+				/form[@title~'^KALPI\ \|\ Login\ -\ Mozilla\ F']
+			</basepath>
+			<icon>
+				iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAMGSURBVDhPrZNZSJRhFIb/osWwCcusnM1m7PtH
+kogyG+sibbF1xiUlHaMsmnEsM2TKtBIVaXOp0EBMUwopmxZcsqwQJjNjEsTU3EpzRh2lsoVIi9D/
+7Rv9L4rqrhfeq+88L+ecj8P8d+2v6ZfsNdnyIk2D/bsfv+d2P/nARZreWvXVvdkBZQ1CvuxPDaTJ
+twcXmLS+uTXDJKcGymtPsfb+ADZXv4dPpQ1+xhYUmts/lRhzjtPySRMUrw6N69zXOulYUmL8mD7V
+gJICNYIzj0J0vQ2yUitmGrsgyTEjmob29DxEfam2ikcnVBEi2dihIeiLY2FLWwRLzkIoEzMgOl+G
+qYXNmJHfBKf0Oiw9VobPQ0/xpS8Tg88Eah5nmNpd4uxeHUHvIRqQzMJySo72OD9cTI2Bc3otXJKr
+seDIPbjqipFfcQcYOos+M3OOxxnm5R6ZzRLJwhrDoj+BxeAFd5zUBYGNM0JsuAuX6JsQaC7BITAL
+tyoLwX3IRWuF3MbjDNMYLhp9s5PAEsWiJZxF8uaVWBJmgGNEPhw1eZimzsR0/1RMV8bix+dicB9P
+oCJ/NZeSwkweD6jbIh57FUrQQ7t4vk6BaxofzPeLgVh1GJu0OjhviIdguR5uKzT41rEeo1YWrdeF
+w+OwXaV+bk0t2wi6wghe02Va9CzeGDxgSWRRtU8BdVAwZnuEIzlhNUbqhBg2O+FFmmsljzPMFaU8
+wbyGoE1N0E0DuncRFG3wRKjCG1L5VrjIAyCXrUXrVXd8vC1C52kZbgSRJB5nmBih0LlymfRdvS8f
+Ek7H2cOidLsnDqzyRuZWL/QdZzGU7g5rPEG5yo17pHLw5fEJZbMLdzzwkHL2Tuzj2HfSHWHfC/3e
+KIL+WDqalqA5UMTV+EuyeOw3zdLPmZNRQmTfa5UEDetpkIqgPZCgM4SCQQS3Voq5g8JZBbT2rzcx
+hXqxnJmSaHAWNBbJpCPlCjFX5inkLivEX8+Qea+CnQS5tGYV9Qw78C/ZHyXUXtTrqP2pfajdqQXU
+vxwSw/wEmUuNDCsjulkAAAAASUVORK5CYII=
+			</icon>
+		</appfolder>
+		<basepath>
+		</basepath>
+	</rootfolder>
+	<variables>
+	</variables>
+</repository>

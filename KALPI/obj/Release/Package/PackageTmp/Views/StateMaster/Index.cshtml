@@ -1,0 +1,159 @@
+﻿@model WS.Framework.Entity.StateMaster
+@{
+    ViewBag.Title = "State Master";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">State Record(s)</h3>
+                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>State Name</th>
+                                        <th>Is Active</th>
+                                        <th>Operation</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" onclick="ClearControls()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add New State</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="StateMasterForm">
+                    <input type="hidden" id="sm_id" name="sm_id" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="field-1" class="control-label">State Name *</label>
+                                <input type="text" class="form-control" id="sm_statename" name="sm_statename">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- /.modal -->
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function Save() {
+            if ($("#sm_statename").val() == null || $("#sm_statename").val() == '') { sweetAlert('State Name required !'); return false; }
+            var formmodel = $("#StateMasterForm").serialize();
+            $.post("/StateMaster/Save", formmodel, function (resdata) {
+                $("#sm_id").val('');
+                $("#con-close-modal").modal('hide');
+                sweetAlert(resdata);
+                GetAll();
+                ClearControls();
+            });
+        }
+
+        function EditRecord(id) {
+            $("#sm_id").val(id)
+            var mData = "{id:'" + id + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/StateMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        $("#sm_statename").val(mRes[0].sm_statename);
+                    }
+                }
+            });
+        }
+
+        function UpdateRecord(id, actionID) {
+            swal({
+                title: "Are you sure ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: (actionID == '1' ? "Yes, delete it!" : "Yes, change it!"),
+                closeOnConfirm: false
+            }, function () {
+
+                var mData = "{id:'" + id + "',ActionType:'" + actionID + "'}";
+                $.ajax({
+                    type: "POST",
+                    url: "/StateMaster/GeneralAction",
+                    data: mData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (mRes) {
+                        if (actionID == '1') {
+                            swal("Deleted!", "Record delete successfully.", "success");
+                        }
+                        else { swal("Changed!", "Record statue change successfully.", "success"); }
+                        GetAll();
+                    }
+                });
+            });
+        }
+
+        function GetAll() {
+            var mData = "{id:'" + ($("#sm_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#sm_id").val()) + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/StateMaster/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].sm_statename + '</td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].sm_id + ' onclick="UpdateRecord(this.id,2)" class="btn btn-' + (mRes[i].sm_isactive == true ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].sm_isactive == true ? 'Active' : 'DeActive') + '</button></td></td>';
+                            InnerHTML += '<td><button type="button" id=' + mRes[i].sm_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
+                                + '<button type="button" id=' + mRes[i].sm_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function ClearControls() {
+            $("#sm_id").val('');
+            $("#sm_statename").val('');
+        }
+    </script>
+}

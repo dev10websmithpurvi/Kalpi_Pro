@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "Custom Scheme";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Custom Scheme Record(s)</h3>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Retailer</th>
+                                        <th>Salesman</th>
+                                        <th>Qty</th>
+                                        <th>Free Qty</th>
+                                        <th>Rate</th>
+                                        <th>Remark</th>
+                                        <th>Current status</th>
+                                        <th>Approve/Reject</th>
+                                        <th>Type</th>
+                                        <th>Reg No</th>
+                                        <th>Distributor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function UpdateRecord(id, cs_status,type) {
+            swal({
+                title: "Are you sure ?",
+                text: "",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, Approve it!",
+                closeOnConfirm: false
+            }, function () {
+
+                var mData = "{id:'" + id + "',cs_status:'" + cs_status + "',type:'" + type + "'}";
+                $.ajax({
+                    type: "POST",
+                    url: "/CustomeScheme/GeneralAction",
+                    data: mData,
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (mRes) {
+                        swal("Changed!", "Record status change successfully.", "success");
+                        GetAll();
+                    }
+                });
+            });
+        }
+        
+        function GetAll() {
+            var mData = "{id:'" + '00000000-0000-0000-0000-000000000000' + "'}";
+            $.ajax({
+                type: "POST",
+                url: "/CustomeScheme/Get_GetAll",
+                data: mData,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].rom_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].smm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cs_qty + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cs_freeqty + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cs_rate + '</td>';
+                            InnerHTML += '<td>' + mRes[i].cs_remarsk + '</td>';
+                            if (mRes[i].cs_status == 0)
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' cs_status=' + mRes[i].cs_status + ' class="btn btn-' + (mRes[i].cs_status == 1 ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].cs_status == 0 ? 'Pending' : 'Not Approve') + '</button></td></td>';
+                            else if (mRes[i].cs_status == 1)
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' cs_status=' + mRes[i].cs_status + ' class="btn btn-' + (mRes[i].cs_status == 1 ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].cs_status == 1 ? 'Approved' : 'Not Approve') + '</button></td></td>';
+                            else if (mRes[i].cs_status == 2)
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' cs_status=' + mRes[i].cs_status + ' class="btn btn-' + (mRes[i].cs_status == 1 ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].cs_status == 2 ? 'Rejected' : 'Not Approve') + '</button></td></td>';
+
+                            if (mRes[i].cs_status == 0) {
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' onclick="UpdateRecord(this.id,1,0)" style="margin:1px;" class="btn btn-info' + ' waves-effect waves-light">' + 'Approve' + '</button>';
+                                InnerHTML += '<button type="button" id=' + mRes[i].cs_id + ' onclick="UpdateRecord(this.id,2,0)" class="btn btn-danger' + ' waves-effect waves-light">' + 'Reject' + '</button></td>';
+                            }
+                            else if (mRes[i].cs_status == 1) {
+
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' onclick="UpdateRecord(this.id,2,0)" class="btn btn-danger' + ' waves-effect waves-light">' + 'Reject' + '</button></td>';
+                            }
+                            else if (mRes[i].cs_status == 2) {
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' onclick="UpdateRecord(this.id,1,0)" style="margin:1px;" class="btn btn-info' + ' waves-effect waves-light">' + 'Approve' + '</button></td>*';
+
+                            }
+
+                            else { InnerHTML += '<td>&nbsp</td>'; }
+                                InnerHTML += '<td><button type="button" id=' + mRes[i].cs_id + ' onclick="UpdateRecord(this.id,' + (mRes[i].cs_type == 1 ? '0' : '1') + ',1)"' + ' class="btn btn-' + (mRes[i].cs_type == 1 ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].cs_type == 0 ? 'OneTime' : 'Continue') + '</button></td></td>';
+                            InnerHTML += '<td>' + mRes[i].cs_reg_no + '</td>';
+                            InnerHTML += '<td>' + mRes[i].dm_name + '</td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+
+        function formatDate(ms, displayTime) {
+            var date = new Date(parseInt(ms));
+            var hour = date.getHours();
+            var mins = date.getMinutes() + '';
+            var time = "AM";
+            // find time
+            if (hour >= 12) {
+                time = "PM";
+            }
+            // fix hours format
+            if (hour > 12) {
+                hour -= 12;
+            }
+            else if (hour == 0) {
+                hour = 12;
+            }
+            // fix minutes format
+            if (mins.length == 1) {
+                mins = "0" + mins;
+            }
+
+            // return formatted date time string
+            if (displayTime)
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
+            else
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear();
+        }
+    </script>
+}

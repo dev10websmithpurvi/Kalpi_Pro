@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Retailer Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title pull-left">Payment Record(s)</h3>
+                <div class="clearfix"></div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Salesman</th>
+                                        <th>Retailer</th>
+                                        <th>Payment Type</th>
+                                        <th>Amount</th>
+                                        <th>Cheque No</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myData"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <!-- End row -->
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            GetAll();
+        });
+
+        function GetAll() {
+            $.ajax({
+                type: "POST",
+                url: "/RetailerPayment/GetAll",
+                data: "",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (mRes) {
+                    if (mRes.length > 0) {
+                        var InnerHTML = '';
+                        for (var i = 0; i < mRes.length; i++) {
+                            InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + mRes[i].smm_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rom_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rp_paymenttypename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rp_amount + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rp_chequeno + '</td>';
+                            InnerHTML += '<td>' + mRes[i].rp_remarks + '</td>';
+                            InnerHTML += '</tr>';
+                        }
+                        $("#myData").html(InnerHTML);
+                    }
+                    else { $("#myData").html(''); }
+                }
+            });
+        }
+    </script>
+}

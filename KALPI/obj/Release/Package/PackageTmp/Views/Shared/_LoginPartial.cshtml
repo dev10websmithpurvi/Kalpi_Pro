@@ -1,0 +1,22 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    <div class="user-info">
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">@User.GetUserFullName().Split('@')[0] <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                @*<li><a href="javascript:void(0)"><i class="md md-face-unlock"></i> Profile<div class="ripple-wrapper"></div></a></li>
+                    <li><a href="javascript:void(0)"><i class="md md-settings"></i> Settings</a></li>
+                    <li><a href="javascript:void(0)"><i class="md md-lock"></i> Lock screen</a></li>*@
+                <li><a href="~/Manage/ChangePassword"><i class="md md-settings"></i> Change Password</a></li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="md md-settings-power"></i> Logout</a></li>
+            </ul>
+        </div>
+        <p class="text-muted m-0">@User.GetUserFullName().Split('@')[1]</p>
+    </div>
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+}
+

@@ -1,0 +1,68 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+# Ranorex Studio 7.0
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KALPI", "KALPI\KALPI.csproj", "{2513414D-3246-4FDC-ADFF-E6983C562AA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.Framework.Entity", "WS.Framework.Entity\WS.Framework.Entity.csproj", "{CC8091A9-64A1-4B61-96C0-289D654980AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.Framework.Common", "WS.Framework.Common\WS.Framework.Common.csproj", "{BDE98DB4-097C-44E0-B9D6-C44AAA82F6DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WS.Framework.Logic", "WS.Framework.Logic\WS.Framework.Logic.csproj", "{11A6EAAC-1816-4BF3-B258-792937650F26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalpiService", "KalpiService\KalpiService\KalpiService.csproj", "{A7EEEC27-1060-4D93-B371-1553146274F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2513414D-3246-4FDC-ADFF-E6983C562AA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2513414D-3246-4FDC-ADFF-E6983C562AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2513414D-3246-4FDC-ADFF-E6983C562AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2513414D-3246-4FDC-ADFF-E6983C562AA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC8091A9-64A1-4B61-96C0-289D654980AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC8091A9-64A1-4B61-96C0-289D654980AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC8091A9-64A1-4B61-96C0-289D654980AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC8091A9-64A1-4B61-96C0-289D654980AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDE98DB4-097C-44E0-B9D6-C44AAA82F6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDE98DB4-097C-44E0-B9D6-C44AAA82F6DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDE98DB4-097C-44E0-B9D6-C44AAA82F6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDE98DB4-097C-44E0-B9D6-C44AAA82F6DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A6EAAC-1816-4BF3-B258-792937650F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A6EAAC-1816-4BF3-B258-792937650F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A6EAAC-1816-4BF3-B258-792937650F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A6EAAC-1816-4BF3-B258-792937650F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7EEEC27-1060-4D93-B371-1553146274F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7EEEC27-1060-4D93-B371-1553146274F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7EEEC27-1060-4D93-B371-1553146274F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7EEEC27-1060-4D93-B371-1553146274F6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://websmithtfs.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = KALPI\\KALPI.csproj
+		SccProjectName1 = KALPI
+		SccLocalPath1 = KALPI
+		SccProjectUniqueName2 = WS.Framework.Entity\\WS.Framework.Entity.csproj
+		SccProjectName2 = WS.Framework.Entity
+		SccLocalPath2 = WS.Framework.Entity
+		SccProjectUniqueName3 = WS.Framework.Common\\WS.Framework.Common.csproj
+		SccProjectName3 = WS.Framework.Common
+		SccLocalPath3 = WS.Framework.Common
+		SccProjectUniqueName4 = WS.Framework.Logic\\WS.Framework.Logic.csproj
+		SccProjectName4 = WS.Framework.Logic
+		SccLocalPath4 = WS.Framework.Logic
+		SccProjectUniqueName5 = KalpiService\\KalpiService\\KalpiService.csproj
+		SccProjectName5 = KalpiService/KalpiService
+		SccLocalPath5 = KalpiService\\KalpiService
+	EndGlobalSection
+EndGlobal
