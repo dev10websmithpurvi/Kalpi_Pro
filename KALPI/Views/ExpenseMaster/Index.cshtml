@@ -8,7 +8,7 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title pull-left">Expense Record(s)</h3>
-                <button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>
+                @*<button id="addToTable" class="btn btn-primary waves-effect waves-light pull-right" onclick="ClearControls()" data-toggle="modal" data-target="#con-close-modal"><i class="fa fa-plus"></i></button>*@
                 <div class="clearfix"></div>
             </div>
             <div class="panel-body">
@@ -18,9 +18,15 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Expense Name</th>
+                                        <th>Expense date</th>
+                                        <th>Client Name</th>
+                                        <th>Expense type</th>
+                                        <th>Expense mode</th>
+                                        <th>Amount</th>
+                                        <th>Remark</th>
+                                        
                                         <th>Is Active</th>
-                                        <th>Operation</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody id="myData"></tbody>
@@ -33,33 +39,7 @@
     </div>
 </div> <!-- End row -->
 
-<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" onclick="ClearControls()" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add New Expense</h4>
-            </div>
-            <div class="modal-body">
-                <form role="form" id="ExpenseMasterForm">
-                    <input type="hidden" id="em_id" name="em_id" />
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="field-1" class="control-label">Expense Name *</label>
-                                <input type="text" class="form-control" id="em_client_name" name="em_client_name">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" onclick="ClearControls()" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                        <button type="button" onclick="Save()" class="btn btn-info waves-effect waves-light">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div><!-- /.modal -->
-</div>
+
 
 @section scripts{
     <script>
@@ -126,7 +106,7 @@
         }
 
         function GetAll() {
-            var mData = "{id:'" + ($("#em_id").val() == '' ? '00000000-0000-0000-0000-000000000000' : $("#em_id").val()) + "'}";
+            var mData = "{id:'00000000-0000-0000-0000-000000000000'}";
             $.ajax({
                 type: "POST",
                 url: "/ExpenseMaster/Get_GetAll",
@@ -138,10 +118,16 @@
                         var InnerHTML = '';
                         for (var i = 0; i < mRes.length; i++) {
                             InnerHTML += '<tr>';
+                            InnerHTML += '<td>' + formatDate(mRes[i].em_expenseDate.substring(6, mRes[i].em_expenseDate.length - 2), false) + '</td>';
                             InnerHTML += '<td>' + mRes[i].em_client_name + '</td>';
+                            InnerHTML += '<td>' + mRes[i].et_typename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].em_modename + '</td>';
+                            InnerHTML += '<td>' + mRes[i].em_amount + '</td>';
+                            InnerHTML += '<td>' + mRes[i].em_remark + '</td>';
+                            
                             InnerHTML += '<td><button type="button" id=' + mRes[i].em_id + ' onclick="UpdateRecord(this.id,2)" class="btn btn-' + (mRes[i].em_isactive == true ? 'info' : 'danger') + ' waves-effect waves-light">' + (mRes[i].em_isactive == true ? 'Active' : 'DeActive') + '</button></td></td>';
-                            InnerHTML += '<td><button type="button" id=' + mRes[i].em_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
-                                + '<button type="button" id=' + mRes[i].em_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
+                            //InnerHTML += '<td><button type="button" id=' + mRes[i].em_id + ' onclick="EditRecord(this.id)" data-toggle="modal" data-target="#con-close-modal" class="btn btn-info waves-effect waves-light"><i class="md-mode-edit"></i></button>&nbsp;'
+                            //    + '<button type="button" id=' + mRes[i].em_id + ' onclick="UpdateRecord(this.id,1)" class="btn btn-danger waves-effect waves-light"><i class="md-delete"></i></button></td>';
                             InnerHTML += '</tr>';
                         }
                         $("#myData").html(InnerHTML);
@@ -149,6 +135,34 @@
                     else { $("#myData").html(''); }
                 }
             });
+        }
+
+        function formatDate(ms, displayTime) {
+            var date = new Date(parseInt(ms));
+            var hour = date.getHours();
+            var mins = date.getMinutes() + '';
+            var time = "AM";
+            // find time
+            if (hour >= 12) {
+                time = "PM";
+            }
+            // fix hours format
+            if (hour > 12) {
+                hour -= 12;
+            }
+            else if (hour == 0) {
+                hour = 12;
+            }
+            // fix minutes format
+            if (mins.length == 1) {
+                mins = "0" + mins;
+            }
+
+            // return formatted date time string
+            if (displayTime)
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
+            else
+                return date.getDate() + "/" + (date.getMonth().toString().length == 1 ? "0" : "") + (date.getMonth() + 1) + "/" + date.getFullYear();
         }
 
         function ClearControls() {

@@ -22,7 +22,7 @@ namespace WS.Framework.Logic
                 ,{ "em_cash_return", model.em_cash_return }
                 ,{ "em_client_name", model.em_client_name }
                 ,{ "em_company_paid", model.em_company_paid }
-                ,{ "dm_pincode", model.em_expenseDate }
+                ,{ "em_expenseDate", model.em_expenseDate }
                 ,{ "em_isactive", model.em_isactive }
                 ,{ "em_mode_id", model.em_mode_id }
                 ,{ "em_paid_by", model.em_paid_by }
@@ -31,6 +31,7 @@ namespace WS.Framework.Logic
                 ,{ "em_total_exp", model.em_total_exp }
                 ,{ "em_total_reimbursement", model.em_total_reimbursement }
                 ,{ "em_type_id", model.em_type_id }
+                , {"em_advance",model.em_advance }
                 ,{ "SystemDateTime", DateTime.Now }
                 ,{ "CreatedBy", model.CreatedBy }
                 ,{ "CreatedDateTime", DateTime.Now }

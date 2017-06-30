@@ -82,5 +82,56 @@ namespace KalpiService.Controllers
             }
         }
 
+        // POST : api/Expense/ExpenseSave
+        [HttpPost]
+        [Route("ExpenseSave")]
+        public COM.ResponseClass ExpenseSave([FromBody] ENT.ExpenseMaster _ExpenseMaster)
+        {
+            try
+            {
+                COM.MEMBERS.SQLReturnValue mRes = new BAL.ExpenseMaster().ExpenseMaster_Insert_Update(_ExpenseMaster);
+                return new COM.ResponseClass("1", mRes.Outval.ToString());
+            }
+            catch (Exception ee)
+            {
+                return new COM.ResponseClass("0", ee.Message);
+            }
+        }
+
+        //[HttpPost]
+        //[Route("UploadExpenseDocument")]
+        //public COM.ResponseClass UploadExpenseDocument([FromBody] ENT.ExpenseMaster _ExpenseMaster)
+        //{
+        //    try
+        //    {
+        //        if (_ExpenseMaster != null)
+        //        {
+        //            if (_ExpenseMaster.vm_imagebyte != null)
+        //            {
+        //                MemoryStream ms = new MemoryStream(_ExpenseMaster.vm_imagebyte);
+        //                //Image image = Image.FromStream(ms);
+        //                //image.Save(@"F:\KALPI_Pro\KALPI_Pro\KalpiService\KalpiService\AppImages\imageTest.png");
+        //                FileStream fs = new FileStream(System.Web.Hosting.HostingEnvironment.MapPath("~/AppImages/") + _ExpenseMaster.vm_visitfile, FileMode.Create);
+        //                ms.WriteTo(fs);
+        //                ms.Close();
+        //                fs.Close();
+        //                fs.Dispose();
+        //            }
+
+        //            COM.MEMBERS.SQLReturnValue mRes = new BAL.ExpenseMaster().ExpenseDocument_Insert_Update(_ExpenseMaster);
+        //            return new COM.ResponseClass("1", mRes.Outval.ToString());
+        //        }
+        //        else
+        //        {
+        //            return new COM.ResponseClass("0", "Something went wrong");
+        //        }
+        //    }
+        //    catch (Exception ee)
+        //    {
+        //        return new COM.ResponseClass("0", ee.Message);
+        //    }
+        //}
+
     }
+
 }

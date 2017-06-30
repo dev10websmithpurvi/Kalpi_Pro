@@ -28,7 +28,9 @@ namespace WS.Framework.Entity
         public int em_total_reimbursement { get; set; }
         public DateTime em_expenseDate { get; set; }
         public bool em_isactive { get; set; }
+        public int em_advance { get; set; }
 
-
+        public string em_modename { get; set; }
+        public string et_typename { get; set; }
     }
 }
